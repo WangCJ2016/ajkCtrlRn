@@ -1,48 +1,37 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from 'react';
+// import App from './App';
+import { Provider } from 'react-redux';
+//import codePush from "react-native-code-push";
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk'; 
+import AppNavigator from './src/navigators'
+import AppReducer from './src/reducers/index';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import { Button } from 'antd-mobile-rn'
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+class App extends React.Component {
+  constructor() {
+    super()
+    this.store = createStore(AppReducer, compose(applyMiddleware(thunk)))
+    
+  }
+  componentDidMount(){
+    // codePush.sync({
+    //   updateDialog: {
+    //     appendReleaseDescription: true,
+    //     descriptionPrefix:'\n\n更新内容：\n',
+    //     title:'更新',
+    //     mandatoryUpdateMessage:'',
+    //     mandatoryContinueButtonLabel:'更新',
+    //   },
+    //   mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
+    // })
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <Button>start</Button>
-      </View>
-    );
+      <Provider store={this.store}>
+        <AppNavigator></AppNavigator>
+      </Provider>
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+export default App
