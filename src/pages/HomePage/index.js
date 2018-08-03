@@ -18,21 +18,22 @@ const WIDTH = Dimensions.get('window').width
 class HomePage extends React.Component {
     state = {  }
     componentDidMount() {
-        DeviceInfo.getMACAddress()
-        .then(res => {
-            console.log(res)
-        })
-        console.log(DeviceInfo.getUniqueID())
+       // console.log(DeviceInfo.getUniqueID())
+       fetch('http://plt.live-ctrl.com/aijukex/we/we_queryHouseInfoByPid?operate=V1ZNeGNVeFhjM1JqTWpGb1kyNVNSR1JJU25NPQ==&pid=101-101')
+       .then(res=>res.json())
+       .then(res=> {
+           console.log(res)
+       })
     }
 
     pageRoutersRender = () => {
         let figures = [
             {img:require(`./assets/light.png`),title:'灯',path:`Light`},
-            {img:require(`./assets/air.png`),title:'空调',path:`air?`},
-            {img:require(`./assets/tv.png`),title:'电视',path:`tv?`},
-            {img:require(`./assets/curtain.png`),title:'窗帘',path:`curtain`},
+            {img:require(`./assets/air.png`),title:'空调',path:`Air`},
+            {img:require(`./assets/tv.png`),title:'电视',path:`Tv`},
+            {img:require(`./assets/curtain.png`),title:'窗帘',path:`Curtain`},
             {img:require(`./assets/model.png`),title:'情景',path:`model`},
-            {img:require(`./assets/service.png`),title:'服务',path:`service?`},
+            {img:require(`./assets/service.png`),title:'服务',path:`Service`},
          ]
          return figures.map((figure, index) => (
              <TouchableOpacity key={index} onPress={() => this.goRouter(figure.path)}>
