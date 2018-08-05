@@ -5,9 +5,9 @@ import {
     StyleSheet
  } from 'react-native';
 
- export default () => (
+ export default (props) => (
     <View>
-        <Text style={styles.name}><Text style={styles.num}>501</Text>房间</Text>
+        <Text style={styles.name}><Text style={styles.num}>{props.roomName}</Text></Text>
         <Text style={styles.desc}>WELCOME!</Text>
     </View>
  )

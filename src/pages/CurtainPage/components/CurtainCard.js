@@ -5,34 +5,46 @@ import {
     StyleSheet,
     Image,
     TouchableWithoutFeedback,
-    ImageBackground
+    ImageBackground,
  } from 'react-native';
+import { Slider } from 'antd-mobile-rn'
 
  class CurtainCard extends React.Component {
      state = {  }
      render() {
          return (
              <View style={styles.container}>
-                <View style={styles.curtain_view}>
-                    <View style={styles.curtain_left}>
-                        <Image source={require('../assets/chuanglian.png')}></Image>
-                        <Text style={styles.left_title}>窗帘</Text>
+                <View>
+                    <View style={styles.curtain_view}>
+                        <View style={styles.curtain_left}>
+                            <Image source={require('../assets/chuanglian.png')}></Image>
+                            <Text style={styles.left_title}>窗帘</Text>
+                        </View>
+                        <TouchableWithoutFeedback>
+                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
+                                <Text style={styles.btn_title}>打开</Text>   
+                            </ImageBackground>
+                        </TouchableWithoutFeedback> 
+                        <TouchableWithoutFeedback>
+                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
+                                <Text style={styles.btn_title}>停止</Text>   
+                            </ImageBackground> 
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback>
+                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
+                                <Text style={styles.btn_title}>停止</Text>   
+                            </ImageBackground>
+                        </TouchableWithoutFeedback>
                     </View>
-                    <TouchableWithoutFeedback>
-                        <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                            <Text style={styles.btn_title}>打开</Text>   
-                        </ImageBackground>
-                    </TouchableWithoutFeedback> 
-                    <TouchableWithoutFeedback>
-                        <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                            <Text style={styles.btn_title}>停止</Text>   
-                        </ImageBackground> 
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback>
-                        <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                            <Text style={styles.btn_title}>停止</Text>   
-                        </ImageBackground>
-                    </TouchableWithoutFeedback>
+                    <View style={{marginTop: 50}}>
+                        <Slider 
+                            style={{marginTop: 50}}
+                            maximumTrackTintColor='#fff'
+                            minimumTrackTintColor='#7487f5'
+                            trackStyle={{height: 7,backgroundColor: '#7487f5', borderRadius: 3}}
+                        /> 
+                    </View>
+                    
                 </View>
              </View>
          );
@@ -44,7 +56,7 @@ import {
         marginTop: 120,
      },
      curtain_view: {
-         width: 470,
+        // width: 470,
          flexDirection: 'row',
          alignItems: 'center'
      },
@@ -55,7 +67,6 @@ import {
          backgroundColor: 'rgba(255,255,255,.2)',
          alignItems: 'center',
          justifyContent: 'center',
-         marginRight: 20,
      },
      left_title: {
          fontSize: 20,
@@ -67,8 +78,8 @@ import {
          alignItems: 'center',
          width: 86,
          height: 86,
-         borderRadius: 42,
-         marginRight: 15
+         borderRadius: 43,
+         marginLeft: 15
      },
      btn_title: {
          fontSize: 22

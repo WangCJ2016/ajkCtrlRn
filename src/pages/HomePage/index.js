@@ -8,22 +8,28 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     Image
-} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+} from 'react-native'
+import DeviceInfo from 'react-native-device-info'
+import {connect} from 'react-redux'
 
 import RoomName from './components/RoomName'
 import EnvirParams from './components/EnvirParams'
 
+import { getHouseInfo } from '../../reducers/app.redux'
+
 const WIDTH = Dimensions.get('window').width
+
+@connect(
+    state=>({app: state.app}),
+    {
+        getHouseInfo
+    }
+)
 class HomePage extends React.Component {
     state = {  }
     componentDidMount() {
        // console.log(DeviceInfo.getUniqueID())
-       fetch('http://plt.live-ctrl.com/aijukex/we/we_queryHouseInfoByPid?operate=V1ZNeGNVeFhjM1JqTWpGb1kyNVNSR1JJU25NPQ==&pid=101-101')
-       .then(res=>res.json())
-       .then(res=> {
-           console.log(res)
-       })
+      this.props.getHouseInfo({pid:'101-101'})
     }
 
     pageRoutersRender = () => {
@@ -32,7 +38,7 @@ class HomePage extends React.Component {
             {img:require(`./assets/air.png`),title:'空调',path:`Air`},
             {img:require(`./assets/tv.png`),title:'电视',path:`Tv`},
             {img:require(`./assets/curtain.png`),title:'窗帘',path:`Curtain`},
-            {img:require(`./assets/model.png`),title:'情景',path:`model`},
+            {img:require(`./assets/model.png`),title:'情景',path:`Model`},
             {img:require(`./assets/service.png`),title:'服务',path:`Service`},
          ]
          return figures.map((figure, index) => (
@@ -50,11 +56,12 @@ class HomePage extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('./assets/bg_sy.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
                     <View style={styles.room_status}>
-                        <RoomName />
+                        <RoomName roomName={this.props.app.roomName} />
                         <EnvirParams />
                     </View>
                 </ImageBackground>
@@ -110,5 +117,6 @@ const styles = StyleSheet.create({
         borderColor: '#eee',
     }
 })
-export default HomePage;
+
+export default HomePage 
 

@@ -13,6 +13,7 @@ import ServicePage from '../pages/ServicePage'
 import AirPage from '../pages/AirPage'
 import TvPage from '../pages/TvPage'
 import CurtainPage from '../pages/CurtainPage'
+import ModelPage from '../pages/ModelPage'
 
 const AppNavigator = createStackNavigator({
     Home: {
@@ -48,14 +49,20 @@ const AppNavigator = createStackNavigator({
     Curtain: {
         screen: CurtainPage,
         navigationOptions: {
-            title: '窗帘'
+            title: '窗帘/窗纱'
+        }
+    },
+    Model: {
+        screen: ModelPage,
+        navigationOptions: {
+            title: '情景模式'
         }
     }
 },
 {
     initialRouteName:'Home', 
      navigationOptions: {
-        headerTitleStyle: {fontSize: 20, color: '#333'},
+        headerTitleStyle: {fontSize: 24, color: '#000', fontWeight: '300'},
         headerStyle: {height: 48, backgroundColor: '#fff'},
         headerBackTitleStyle:{color:'#333'},
         headerTintColor:'#333',

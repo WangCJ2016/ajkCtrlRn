@@ -3,19 +3,22 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
-    StyleSheet
+    StyleSheet,
  } from 'react-native';
 
- export default () => {
+ export default (props) => {
     const arr = ['卧室','走廊','卫生间','其他']
 
+    const changeTypeHandle = (type) => {
+        props.changeType({lightType: type})
+    }
     return (
         <View style={styles.light_tab}>
           {
               arr.map((type) => (
-                  <TouchableWithoutFeedback key={type}>
-                      <View style={styles.tab_item}> 
-                          <Text style={styles.tab_title}>{type}</Text>
+                  <TouchableWithoutFeedback key={type} onPress={() => changeTypeHandle(type)}>
+                      <View style={[styles.tab_item, props.type === type ? styles.tab_item_active : '']}> 
+                          <Text style={[styles.tab_title, props.type === type ? styles.tab_title_active: '']}>{type}</Text>
                       </View>
                   </TouchableWithoutFeedback>
               ))
@@ -34,13 +37,18 @@ import {
         paddingRight: 18,
         paddingTop: 5,
         paddingBottom: 5,
-        backgroundColor: '#FFFFFF',
         borderRadius: 20,
         marginLeft: 10,
         marginRight: 10 
      },
+     tab_item_active: {
+        backgroundColor: '#FFFFFF', 
+     },
      tab_title: {
          fontSize: 25,
-         color: '#fb7346',
+         color: '#fff',
+     },
+     tab_title_active: {
+        color: '#fb7346', 
      }
  })
