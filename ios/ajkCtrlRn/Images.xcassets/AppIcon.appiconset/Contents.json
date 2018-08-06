@@ -1,48 +1,58 @@
 {
   "images" : [
     {
-      "idiom" : "iphone",
       "size" : "20x20",
-      "scale" : "2x"
+      "idiom" : "ipad",
+      "filename" : "图标20.jpg",
+      "scale" : "1x"
     },
     {
-      "idiom" : "iphone",
       "size" : "20x20",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "iphone",
-      "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "图标40.jpg",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
-      "idiom" : "iphone",
-      "filename" : "图标72.jpg",
-      "scale" : "3x"
+      "idiom" : "ipad",
+      "filename" : "图标29jpg.jpg",
+      "scale" : "1x"
     },
     {
-      "size" : "40x40",
-      "idiom" : "iphone",
-      "filename" : "图标50.jpg",
+      "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "图标58.jpg",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
-      "idiom" : "iphone",
-      "filename" : "图标100.jpg",
-      "scale" : "3x"
+      "idiom" : "ipad",
+      "filename" : "图标40-1.jpg",
+      "scale" : "1x"
     },
     {
-      "size" : "60x60",
-      "idiom" : "iphone",
-      "filename" : "图标144.jpg",
+      "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "图标80.jpg",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
-      "size" : "60x60",
-      "scale" : "3x"
+      "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "图标76.jpg",
+      "scale" : "1x"
+    },
+    {
+      "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "图标152.jpg",
+      "scale" : "2x"
+    },
+    {
+      "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "图标167.jpg",
+      "scale" : "2x"
     },
     {
       "size" : "1024x1024",

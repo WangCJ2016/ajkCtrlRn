@@ -11,6 +11,7 @@ import {
 
  import { getTvInfo, smartHostControl } from '../../reducers/tv.redux'
  import TvCard from './components/TvCard'
+ import BlankPage from '../../components/BlankPage'
 
  @connect(
      state => ({app: state.app, tv: state.tv}),
@@ -38,33 +39,43 @@ import {
         })
      }
 
+     tvRender() {
+        const {tvs} = this.props.tv
+         if(tvs.length === 0) {
+             return <BlankPage url={require('./assets/wuleixing.png')} desc='无可控电视' color='#fb7346'></BlankPage>
+         }
+         if(tvs.length === 1) {
+            return <ScrollView contentContainerStyle={styles.tab_wrap}>
+                    <TvCard  
+                        tv={tvs[0]}
+                        clickHandle={this.clickHandle}
+                    /> 
+                </ScrollView> 
+         }
+         return (
+            <Tabs tabs={tvs} >
+                {
+                tvs.map((tv, index) => (
+                    <ScrollView key={index} contentContainerStyle={styles.tab_wrap}>
+                        <TvCard  
+                            tv={tv}
+                            clickHandle={this.clickHandle}
+                        /> 
+                    </ScrollView>
+                    ))
+                }
+            </Tabs>  
+         )
+
+     }
+
      render() {
          const {tvs} = this.props.tv
          console.log(this.props)
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_ds.png')} >
-                <View style={{flex: 1}}>
-                {
-                 tvs.length === 1 ? 
-                 <ScrollView contentContainerStyle={styles.tab_wrap}>
-                    <TvCard  
-                        tv={tvs[0]}
-                        clickHandle={this.clickHandle}
-                    /> 
-                </ScrollView>:
-                <Tabs tabs={tvs} >
-                    {
-                    tvs.map((tv, index) => (
-                        <ScrollView key={index} contentContainerStyle={styles.tab_wrap}>
-                            <TvCard  
-                                tv={tv}
-                                clickHandle={this.clickHandle}
-                            /> 
-                        </ScrollView>
-                        ))
-                    }
-                </Tabs> 
-               }
+                <View style={{flex: 1, width: '100%'}}>
+                   {this.tvRender()} 
                 </View>
              </ImageBackground>
          );

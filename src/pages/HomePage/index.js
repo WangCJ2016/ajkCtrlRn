@@ -16,20 +16,35 @@ import RoomName from './components/RoomName'
 import EnvirParams from './components/EnvirParams'
 
 import { getHouseInfo } from '../../reducers/app.redux'
+import { getLockInfo, smartHostControl } from '../../reducers/lock.redux'
 
 const WIDTH = Dimensions.get('window').width
 
 @connect(
-    state=>({app: state.app}),
+    state=>({app: state.app, lock: state.lock}),
     {
-        getHouseInfo
+        getHouseInfo, getLockInfo, smartHostControl
     }
 )
 class HomePage extends React.Component {
-    state = {  }
+    state = {
+        lockState: false
+    }
+
     componentDidMount() {
        // console.log(DeviceInfo.getUniqueID())
       this.props.getHouseInfo({pid:'101-101'})
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.app.houseId && !nextProps.lock.deviceId) {
+            const { houseId } = nextProps.app
+            this.props.getHouseInfo({pid:'101-101'})
+            this.props.getLockInfo({
+              houseId: houseId, 
+              deviceType: 'FINGERPRINT_LOCK' 
+            }) 
+        }
     }
 
     pageRoutersRender = () => {
@@ -55,8 +70,19 @@ class HomePage extends React.Component {
         this.props.navigation.navigate(url)
     }
 
+    lockClick = () => {
+        const { deviceId } = this.props.lock
+        const { houseId } = this.props.app
+        this.props.smartHostControl({
+            houseId: houseId,
+            deviceType: 'FINGERPRINT_LOCK',
+            deviceId: deviceId,
+           // customerId: customerId
+        })
+    }
+
     render() {
-        console.log(this.props)
+
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('./assets/bg_sy.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
@@ -66,8 +92,11 @@ class HomePage extends React.Component {
                     </View>
                 </ImageBackground>
                 <View style={{alignItems:'center',marginTop: -107}}>
-                    <TouchableWithoutFeedback>
-                        <Image source={require('./assets/door.png')}></Image>
+                    <TouchableWithoutFeedback 
+                        onPressIn={()=>this.setState({lockState: true})}
+                        onPressOut={()=>this.setState({lockState: false})}
+                        onPress={this.lockClick}>
+                        <Image source={this.state.lockState ? require('./assets/door_active.png'):require('./assets/door.png')}></Image>
                     </TouchableWithoutFeedback> 
                 </View>
                 <View style={{alignItems:'center'}}>

@@ -10,6 +10,7 @@ import {
 
  import AirCard from './components/AirCard'
  import { getAirInfo, smartHostControl } from '../../reducers/air.redux'
+ import BlankPage from '../../components/BlankPage'
 
  @connect(
      state => ({app: state.app, air: state.air}), 
@@ -90,37 +91,47 @@ import {
         } 
     }
 
+    airRender() {
+        const { airs, deviceType } = this.props.air
+        if(airs.length === 0) {
+            return <BlankPage url={require('./assets/kongtiao_kng.png')} desc='无可控空调' color='#5b97fd'></BlankPage>
+        }
+        if(airs.length === 1) {
+            return (
+                <View key={airs[0].deviceId} style={styles.tab_wrap}>
+                    <AirCard 
+                        air={airs[0]} 
+                        deviceType={deviceType}
+                        switchClick={this.switchClick}
+                        temChangeHandle={this.temChangeHandle}
+                    />
+                </View>
+            )
+        }
+        return (
+            <Tabs tabs={airs} >
+            {
+                airs.map(air => (
+                    <View key={air.deviceId} style={styles.tab_wrap}>
+                        <AirCard 
+                            air={air} 
+                            deviceType={deviceType}
+                            switchClick={this.switchClick}
+                            temChangeHandle={this.temChangeHandle}
+                        />
+                    </View>
+                ))
+            }
+            </Tabs> 
+        )
+    }
+
      render() {
         const { airs, deviceType } = this.props.air
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_kt.png')} resizeMode='cover'>
-                <View style={{flex: 1}}>
-                    {
-                        airs.length === 1 ? 
-                        <View key={airs[0].deviceId} style={styles.tab_wrap}>
-                            <AirCard 
-                                air={airs[0]} 
-                                deviceType={deviceType}
-                                switchClick={this.switchClick}
-                                temChangeHandle={this.temChangeHandle}
-                            />
-                        </View>
-                        :
-                        <Tabs tabs={airs} >
-                        {
-                            airs.map(air => (
-                                <View key={air.deviceId} style={styles.tab_wrap}>
-                                    <AirCard 
-                                        air={air} 
-                                        deviceType={deviceType}
-                                        switchClick={this.switchClick}
-                                        temChangeHandle={this.temChangeHandle}
-                                    />
-                                </View>
-                            ))
-                        }
-                    </Tabs>
-                    }
+                <View style={{flex: 1, width: '100%'}}>
+                   {this.airRender()}
                 </View>
              </ImageBackground>
          );

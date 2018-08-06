@@ -7,7 +7,8 @@ import { air } from './air.redux'
 import { service } from './service.redux'
 import { curtain } from './curtain.redux'
 import { tv } from './tv.redux'
+import { lock } from './lock.redux'
 
-const AppReducer = combineReducers({app, model, lights, air, service, curtain, tv})
+const AppReducer = combineReducers({app, model, lights, air, service, curtain, tv, lock})
 
 export default AppReducer

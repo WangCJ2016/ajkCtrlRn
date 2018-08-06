@@ -12,6 +12,7 @@ import {
  import { getCurtainInfo, smartHostControl } from '../../reducers/curtain.redux'
 
  import CurtainCard from './components/CurtainCard'
+ import BlankPage from '../../components/BlankPage'
 
  @connect(
      state => ({app: state.app, curtain: state.curtain}),
@@ -41,27 +42,33 @@ import {
         })
      }
 
-     render() {
+     curtainRender() {
         const { curtains } = this.props.curtain
-        console.log(curtains)
+        if(curtains.length === 0) {
+            return <BlankPage url={require('./assets/chlian_kb.png')} desc='无可控窗帘'></BlankPage>
+        }
+        if( curtains.length === 1) {
+          return  <ScrollView contentContainerStyle={styles.tab_wrap}>
+                    <CurtainCard ways={curtains[0].ways} clickHandle={this.clickHandle}></CurtainCard>  
+                </ScrollView>
+        } 
+        return (
+            <Tabs tabs={curtains} initialPage={1}>
+            {
+                curtains.map(curtain => (
+                    <ScrollView key={curtain.title} contentContainerStyle={styles.tab_wrap}>
+                        <CurtainCard ways={curtain.ways} clickHandle={this.clickHandle}></CurtainCard>  
+                    </ScrollView>
+                ))
+            }
+           </Tabs> 
+        ) 
+     }
+
+     render() {
         return (
             <ImageBackground style={styles.container} resizeMode='cover' source={require('./assets/bg_chuang.png')}>
-               {
-                   curtains.length === 1?
-                    <ScrollView contentContainerStyle={styles.tab_wrap}>
-                        <CurtainCard ways={curtains[0].ways} clickHandle={this.clickHandle}></CurtainCard>  
-                    </ScrollView>
-                   :
-                   <Tabs tabs={curtains} initialPage={1}>
-                    {
-                        curtains.map(curtain => (
-                            <ScrollView key={curtain.title} contentContainerStyle={styles.tab_wrap}>
-                                <CurtainCard ways={curtain.ways} clickHandle={this.clickHandle}></CurtainCard>  
-                            </ScrollView>
-                        ))
-                    }
-                   </Tabs> 
-               }
+               {this.curtainRender()}
             </ImageBackground>
         );
      }
