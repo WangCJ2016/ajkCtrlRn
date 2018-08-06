@@ -64,7 +64,7 @@ import {
      render() {
          const {type} = this.props.model 
          return (
-             <ScrollView contentContainerStyle={{alignItems:'center', backgroundColor:'#fff', flex: 1}}>
+             <ScrollView contentContainerStyle={{alignItems:'center', flex: 1}}>
                  <View style={styles.models_view}>
                      {
                          this.normalTypeRender()

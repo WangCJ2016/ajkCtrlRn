@@ -34,6 +34,10 @@ import { connect } from 'react-redux'
          }
      }
 
+     componentWillUnmount() {
+         this.websocket.close()
+     }
+
      websocketHandle = (serveId) => {
         this.websocket = new WebSocket(`ws://${config.api.websocket}/stServlet.st?serverId=` + serveId) 
         this.websocket.onopen = () => {
@@ -88,7 +92,7 @@ import { connect } from 'react-redux'
      render() {
          const { lightType, lights } = this.props.lights
          const typelights = lights.filter(light => light.name.includes(lightType))
-         console.log(this.state.switchStatus)
+         
          return (
             <ImageBackground resizeMode='cover' style={styles.container} source={require('./assets/bg_d.png')}>
                 <ScrollView>

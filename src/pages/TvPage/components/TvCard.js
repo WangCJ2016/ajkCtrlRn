@@ -4,114 +4,142 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableWithoutFeedback,
     TouchableHighlight,
     TouchableOpacity
  } from 'react-native';
 
- class TvCard extends React.Component {
-     state = {  }
+ const SWITCHIMGURL = {
+     'OFF': require('../assets/switch_off.png'),
+     'ON': require('../assets/switch_on.png')
+ }
 
-     numBtnRender () {
+ class TvCard extends React.Component {
+     state = {  
+        tv:'OFF',
+        tvBox:'OFF'
+     }
+
+     numBtnRender (box_deviceId) {
          const nums = [1,2,3,4,5,6,7,8,9,0]
          return nums.map(num => (
-             <TouchableHighlight key={num} underlayColor='#ccc' style={styles.num_view} onPress={()=>{}}>
+             <TouchableHighlight key={num} underlayColor='#ccc' style={styles.num_view} onPress={()=>this.clickHandle(num, box_deviceId)}>
                  <Text style={styles.num}>{num}</Text>
              </TouchableHighlight>
          ))
      }
 
+     switchClick = (key, deviceId) => {
+        this.setState({
+            [key]: this.state[key] === 'ON' ? 'OFF' : 'ON'
+        }, () => {
+            this.props.clickHandle({key: this.state[key], deviceId: deviceId}) 
+        })
+     }
+
+     clickHandle = (key, deviceId) => {
+        this.props.clickHandle({key: key, deviceId: deviceId})  
+     }
+
      render() {
+         let tv_deviceId,box_deviceId
+         for(let i in this.props.tv){
+            if (i.indexOf('电视机')>-1) {
+              tv_deviceId = this.props.tv[i]
+            }
+            if (i.indexOf('机顶盒')>-1) {
+                box_deviceId = this.props.tv[i]
+              }
+          }
          return (
              <View style={styles.tv_card}>
                  <View style={styles.tv_view}>
                     <View style={[styles.row_between, {paddingLeft: 38, paddingRight:60}]}>
                         <Text style={styles.tv_title}>电视机控制区</Text>
-                        <TouchableWithoutFeedback>
-                            <Image source={require('../assets/switch_on.png')}></Image>
-                        </TouchableWithoutFeedback>
+                        <TouchableOpacity activeOpacity={1} onPress={()=>this.switchClick('tv', tv_deviceId)}>
+                            <Image source={SWITCHIMGURL[this.state.tv]}></Image>
+                        </TouchableOpacity>
                     </View>
                     <View style={[styles.row_between, {marginTop: 30, paddingLeft: 50, paddingRight: 50}]}>
-                        <TouchableHighlight style={styles.underlay_btn} onPress={() => {}} underlayColor='#ccc'>
+                        <TouchableHighlight style={styles.underlay_btn} onPress={()=>this.clickHandle('MENU', tv_deviceId)} underlayColor='#ccc'>
                             <Image source={require('../assets/TVAV.png')}></Image>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={styles.underlay_btn}>
+                        </TouchableHighlight >
+                        <TouchableHighlight style={styles.underlay_btn}  onPress={()=>this.clickHandle('VOL_SUB', tv_deviceId)} underlayColor='#ccc'>
                             <Image source={require('../assets/voice_j.png')}></Image>
                         </TouchableHighlight>
-                        <TouchableHighlight style={styles.underlay_btn}>
+                        <TouchableHighlight style={styles.underlay_btn}  onPress={()=>this.clickHandle('VOL_PLUS', tv_deviceId)} underlayColor='#ccc'>
                             <Image source={require('../assets/voice_jj.png')}></Image>
                         </TouchableHighlight>
                     </View>
                  </View>
                  <View style={[styles.tv_view, {marginTop: 30}]}>
                     <View style={[styles.row_between, {paddingLeft: 50, paddingRight: 50}]}>
-                        <TouchableHighlight style={styles.underlay_btn} onPress={() => {}} underlayColor='#ccc'>
+                        <TouchableHighlight style={styles.underlay_btn} onPress={()=>this.clickHandle('HOME', box_deviceId)} underlayColor='#ccc'>
                             <Image source={require('../assets/home.png')}></Image>
                         </TouchableHighlight> 
                         <Text style={styles.tv_title}>机顶盒</Text>
-                        <TouchableWithoutFeedback>
+                        <TouchableOpacity activeOpacity={1} onPress={()=>this.switchClick('tvBox', box_deviceId)} underlayColor='#ccc'>
                             <View style={styles.underlay_btn}>
-                             <Image source={require('../assets/switch_on.png')}></Image> 
+                             <Image source={SWITCHIMGURL[this.state.tvBox]}></Image> 
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableOpacity>
                     </View >
                     <View style={[styles.row_between, {paddingLeft: 50, paddingRight: 50, marginTop: 40}]}>
                         <View style={styles.channel_voice_view}>
-                            <TouchableHighlight style={[styles.channel_voice_btn, {borderTopLeftRadius: 29, borderTopRightRadius: 29}]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.channel_voice_btn, {borderTopLeftRadius: 29, borderTopRightRadius: 29}]} onPress={()=>this.clickHandle('VOL_PLUS', box_deviceId)} underlayColor='#ccc'>
                                 <Image source={require('../assets/+.png')}></Image>
                             </TouchableHighlight> 
                             <Text style={{fontSize: 20}}>音量</Text>
-                            <TouchableHighlight style={[styles.channel_voice_btn, {borderBottomLeftRadius: 29, borderBottomRightRadius: 29}]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.channel_voice_btn, {borderBottomLeftRadius: 29, borderBottomRightRadius: 29}]} onPress={()=>this.clickHandle('VOL_SUB', box_deviceId)} underlayColor='#ccc'>
                                 <Image source={require('../assets/-.png')}></Image>
                             </TouchableHighlight> 
                         </View>
                         <View style={[styles.round_view, {transform: [{rotateZ: '45deg'}]}]}>
-                            <TouchableHighlight style={[styles.round_view_btn]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.round_view_btn]} onPress={()=>this.clickHandle('UP', box_deviceId)} underlayColor='#ccc'>
                                 <Image style={{transform: [{rotateZ:'-45deg'}]}} source={require('../assets/up.png')}></Image>
                             </TouchableHighlight>
-                            <TouchableHighlight style={[styles.round_view_btn]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.round_view_btn]} onPress={()=>this.clickHandle('LEFT', box_deviceId)} underlayColor='#ccc'>
                                 <Image style={{transform: [{rotateZ:'-45deg'}]}} source={require('../assets/left.png')}></Image>
                             </TouchableHighlight>
-                            <TouchableHighlight style={[styles.round_view_btn]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.round_view_btn]} onPress={()=>this.clickHandle('RIGHT', box_deviceId)} underlayColor='#ccc'>
                                 <Image style={{transform: [{rotateZ:'-45deg'}]}} source={require('../assets/right.png')}></Image>
                             </TouchableHighlight>
-                            <TouchableHighlight style={[styles.round_view_btn]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.round_view_btn]} onPress={()=>this.clickHandle('DOWN', box_deviceId)} underlayColor='#ccc'>
                                 <Image style={{transform: [{rotateZ:'-45deg'}]}} source={require('../assets/down.png')}></Image>
                             </TouchableHighlight>
-                            <TouchableOpacity style={styles.round_ok}>
+                            <TouchableOpacity style={styles.round_ok} onPress={()=>this.clickHandle('OK', box_deviceId)}>
                                 <Text style={{fontSize: 26, color: '#fff'}}>ok</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.channel_voice_view}>
-                            <TouchableHighlight style={[styles.channel_voice_btn, {borderTopLeftRadius: 29, borderTopRightRadius: 29}]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.channel_voice_btn, {borderTopLeftRadius: 29, borderTopRightRadius: 29}]} onPress={()=>this.clickHandle('UP', box_deviceId)} underlayColor='#ccc'>
                                 <Image source={require('../assets/+.png')}></Image>
                             </TouchableHighlight> 
                             <Text style={{fontSize: 20}}>频道</Text>
-                            <TouchableHighlight style={[styles.channel_voice_btn, {borderBottomLeftRadius: 29, borderBottomRightRadius: 29}]} onPress={() => {}} underlayColor='#ccc'>
+                            <TouchableHighlight style={[styles.channel_voice_btn, {borderBottomLeftRadius: 29, borderBottomRightRadius: 29}]} onPress={()=>this.clickHandle('DOWN', box_deviceId)} underlayColor='#ccc'>
                                 <Image source={require('../assets/-.png')}></Image>
                             </TouchableHighlight> 
                         </View>
                     </View>
                     <View style={[styles.row_between, {marginTop: 30, paddingLeft: 40, paddingRight: 50}]}>
-                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=> {}}>
+                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=>this.clickHandle('RETURN', box_deviceId)}>
                             <View style={styles.action_btn}>
                                 <Image style={{marginTop: 10}} source={require('../assets/back.png')}></Image>
                                 <Text style={styles.action_btn_desc}>返回</Text>
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=> {}}>
+                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=>this.clickHandle('PLAY', box_deviceId)}>
                             <View style={styles.action_btn}>
                                 <Image style={{marginTop: 10}} source={require('../assets/huik.png')}></Image>
                                 <Text style={styles.action_btn_desc}>回看</Text>
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=> {}}>
+                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=>this.clickHandle('MUTE', box_deviceId)}>
                             <View style={styles.action_btn}>
                                 <Image style={{marginTop: 10}} source={require('../assets/mute.png')}></Image>
                                 <Text style={styles.action_btn_desc}>静音</Text>
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=> {}}>
+                        <TouchableHighlight underlayColor='#ccc' style={{borderRadius: 5}} onPress={()=>this.clickHandle('STOP', box_deviceId)}>
                             <View style={styles.action_btn}>
                                 <Image style={{marginTop: 10}} source={require('../assets/db.png')}></Image>
                                 <Text style={styles.action_btn_desc}>点播</Text>
@@ -119,7 +147,7 @@ import {
                         </TouchableHighlight>
                     </View>
                     <View style={styles.nums_view}>
-                        { this.numBtnRender() }
+                        { this.numBtnRender(box_deviceId) }
                     </View>
                  </View>
              </View>

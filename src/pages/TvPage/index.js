@@ -7,29 +7,64 @@ import {
     ScrollView
  } from 'react-native';
  import { Tabs } from 'antd-mobile-rn'
+ import { connect } from 'react-redux'
 
+ import { getTvInfo, smartHostControl } from '../../reducers/tv.redux'
  import TvCard from './components/TvCard'
 
+ @connect(
+     state => ({app: state.app, tv: state.tv}),
+     {
+         getTvInfo, smartHostControl
+     }
+ )
  class TvPage extends React.Component {
      state = {  }
+
+     componentDidMount() {
+        const { houseId } = this.props.app
+        this.props.getTvInfo({
+            houseId: houseId
+        })    
+     }
+
+     clickHandle = ({deviceId, key}) => {
+        const { houseId } = this.props.app
+        this.props.smartHostControl({
+            houseId:houseId,
+            deviceType: 'VIRTUAL_TV_DVD_REMOTE',
+            deviceId: deviceId,
+            key:key
+        })
+     }
+
      render() {
-        const tabs = [
-            { title: 'First Tab' },
-            { title: 'Second Tab' },
-            { title: 'Third Tab' },
-          ];
+         const {tvs} = this.props.tv
+         console.log(this.props)
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_ds.png')} >
                 <View style={{flex: 1}}>
-                    <Tabs tabs={tabs} initialPage={1}>
-                        {
-                            tabs.map(tab => (
-                                <ScrollView key={tab} contentContainerStyle={styles.tab_wrap}>
-                                    <TvCard ></TvCard>  
-                                </ScrollView>
-                            ))
-                        }
-                    </Tabs>
+                {
+                 tvs.length === 1 ? 
+                 <ScrollView contentContainerStyle={styles.tab_wrap}>
+                    <TvCard  
+                        tv={tvs[0]}
+                        clickHandle={this.clickHandle}
+                    /> 
+                </ScrollView>:
+                <Tabs tabs={tvs} >
+                    {
+                    tvs.map((tv, index) => (
+                        <ScrollView key={index} contentContainerStyle={styles.tab_wrap}>
+                            <TvCard  
+                                tv={tv}
+                                clickHandle={this.clickHandle}
+                            /> 
+                        </ScrollView>
+                        ))
+                    }
+                </Tabs> 
+               }
                 </View>
              </ImageBackground>
          );

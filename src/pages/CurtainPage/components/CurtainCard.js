@@ -4,48 +4,63 @@ import {
     Text,
     StyleSheet,
     Image,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     ImageBackground,
  } from 'react-native';
 import { Slider } from 'antd-mobile-rn'
 
  class CurtainCard extends React.Component {
      state = {  }
+
+     slideChange = (params, e) => {
+        this.props.clickHandle({...params, brightness: Math.floor(e)})
+     }
+
+     curtainRender() {
+         if(!this.props.ways) return
+         return this.props.ways.map((way, index) => (
+            <View key={way.id}>
+                <View style={styles.curtain_view}>
+                    <View style={styles.curtain_left}>
+                        <Image source={require('../assets/chuanglian.png')}></Image>
+                        <Text style={styles.left_title}>{way.name}</Text>
+                    </View>
+                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.clickHandle({wayId: way.wayId, key: 'OPEN'})}>
+                        <ImageBackground style={styles.btn_view} source={way.btn === 'OPEN' ? require('../assets/blue_y.png'):require('../assets/button.png')}>
+                            <Text style={[styles.btn_title, { color: way.btn === 'OPEN' ? '#fff': '#333'}]}>打开</Text>   
+                        </ImageBackground>
+                    </TouchableOpacity> 
+                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.clickHandle({wayId: way.wayId, key: 'STOP'})}>
+                        <ImageBackground style={styles.btn_view} source={way.btn === 'STOP' ? require('../assets/blue_y.png'):require('../assets/button.png')}>
+                            <Text style={[styles.btn_title, { color: way.btn === 'STOP' ? '#fff': '#333'}]}>停止</Text>   
+                        </ImageBackground> 
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.clickHandle({wayId: way.wayId, key: 'CLOSE'})}>
+                        <ImageBackground style={styles.btn_view} source={way.btn === 'CLOSE' ? require('../assets/blue_y.png'):require('../assets/button.png')}>
+                            <Text style={[styles.btn_title, { color: way.btn === 'CLOSE' ? '#fff': '#333'}]}>关闭</Text>   
+                        </ImageBackground>
+                    </TouchableOpacity>
+                </View>
+                <View style={{marginTop: 50}}>
+                    <Slider 
+                        style={{marginTop: 50}}
+                        min={0}
+                        max={100}
+                        maximumTrackTintColor='#fff'
+                        minimumTrackTintColor='#7487f5'
+                        defaultValue={50}
+                        trackStyle={{height: 7,backgroundColor: '#7487f5', borderRadius: 3}}
+                        onAfterChange={(e) => this.slideChange({wayId: way.wayId, key: 'OPEN'}, e)}
+                    /> 
+                </View>
+            </View> 
+         ))
+     }
      render() {
+         
          return (
              <View style={styles.container}>
-                <View>
-                    <View style={styles.curtain_view}>
-                        <View style={styles.curtain_left}>
-                            <Image source={require('../assets/chuanglian.png')}></Image>
-                            <Text style={styles.left_title}>窗帘</Text>
-                        </View>
-                        <TouchableWithoutFeedback>
-                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                                <Text style={styles.btn_title}>打开</Text>   
-                            </ImageBackground>
-                        </TouchableWithoutFeedback> 
-                        <TouchableWithoutFeedback>
-                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                                <Text style={styles.btn_title}>停止</Text>   
-                            </ImageBackground> 
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback>
-                            <ImageBackground style={styles.btn_view} source={require('../assets/button.png')}>
-                                <Text style={styles.btn_title}>停止</Text>   
-                            </ImageBackground>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <View style={{marginTop: 50}}>
-                        <Slider 
-                            style={{marginTop: 50}}
-                            maximumTrackTintColor='#fff'
-                            minimumTrackTintColor='#7487f5'
-                            trackStyle={{height: 7,backgroundColor: '#7487f5', borderRadius: 3}}
-                        /> 
-                    </View>
-                    
-                </View>
+                {this.curtainRender()} 
              </View>
          );
      }

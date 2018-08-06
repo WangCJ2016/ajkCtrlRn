@@ -6,35 +6,121 @@ import {
     StyleSheet
  } from 'react-native'
  import { Tabs } from 'antd-mobile-rn'
+ import { connect } from 'react-redux'
 
  import AirCard from './components/AirCard'
+ import { getAirInfo, smartHostControl } from '../../reducers/air.redux'
 
+ @connect(
+     state => ({app: state.app, air: state.air}), 
+     {
+         getAirInfo, smartHostControl
+     }
+ )
  class AirPage extends React.Component {
      state = {  }
+
+     componentDidMount() {
+         const { houseId } = this.props.app
+         this.props.getAirInfo({
+            deviceName: encodeURI('空调'), 
+            houseId: houseId 
+         })
+     }
+     
+    switchClick = ({deviceId, key, model, speed}) => {
+        const { houseId } = this.props.app
+        const { deviceType } = this.props.air
+        let data = null
+        if (deviceType === 'VIRTUAL_AIR_REMOTE') {
+            data = {
+                houseId: houseId,
+                deviceType: deviceType,
+                deviceId: deviceId,
+                key: key
+            }
+        }
+        if (deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE') {
+            if (key === 'OFF') {
+                data = {
+                    houseId: houseId,
+                    deviceType: deviceType,
+                    deviceId: deviceId,
+                    onOff : "OFF",
+                    mode: 'COOL',
+                    wind: 0,
+                    temp: 25
+                }
+            } else {
+                data = {
+                    houseId: houseId,
+                    deviceType: deviceType,
+                    token: token,
+                    deviceId: deviceId,
+                    mode: 'COOL',
+                    temp: key,
+                    wind: 0
+                }
+            }
+        }
+        this.props.smartHostControl(data)
+     }
+
+    temChangeHandle = ({deviceId, key, model, speed}) => {
+        const { houseId } = this.props.app
+        const { deviceType } = this.props.air
+        if (deviceType === 'VIRTUAL_AIR_REMOTE') {
+            this.props.smartHostControl({
+                houseId: houseId,
+                deviceType: deviceType,
+                deviceId: deviceId,
+                key: key
+            }) 
+        }
+        if(deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE') {
+            const _mode = model === 'cold' ? 'COOL' : 'WARM'
+            this.props.smartHostControl({
+                houseId: houseId,
+                deviceType: deviceType,
+                deviceId: deviceId,
+                mode: _mode,
+                temp: key,
+                wind: speed
+            })  
+        } 
+    }
+
      render() {
-        const tabs = [
-            { title: 'First Tab' },
-            { title: 'Second Tab' },
-            { title: 'Third Tab' },
-          ];
-        const style = {
-            flex:1,
-            alignItems: 'center',
-            justifyContent: 'center',
-           
-          } 
+        const { airs, deviceType } = this.props.air
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_kt.png')} resizeMode='cover'>
                 <View style={{flex: 1}}>
-                    <Tabs tabs={tabs} initialPage={1}>
+                    {
+                        airs.length === 1 ? 
+                        <View key={airs[0].deviceId} style={styles.tab_wrap}>
+                            <AirCard 
+                                air={airs[0]} 
+                                deviceType={deviceType}
+                                switchClick={this.switchClick}
+                                temChangeHandle={this.temChangeHandle}
+                            />
+                        </View>
+                        :
+                        <Tabs tabs={airs} >
                         {
-                            tabs.map(tab => (
-                                <View key={tab} style={styles.tab_wrap}>
-                                    <AirCard title={tab.title}></AirCard>  
+                            airs.map(air => (
+                                <View key={air.deviceId} style={styles.tab_wrap}>
+                                    <AirCard 
+                                        air={air} 
+                                        deviceType={deviceType}
+                                        switchClick={this.switchClick}
+                                        temChangeHandle={this.temChangeHandle}
+                                    />
                                 </View>
                             ))
                         }
                     </Tabs>
+                    }
                 </View>
              </ImageBackground>
          );

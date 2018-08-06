@@ -7,24 +7,28 @@ import {
     TouchableWithoutFeedback,
     Image
  } from 'react-native'
- import { Modal } from 'antd-mobile-rn'
+ import { connect } from 'react-redux'
 
+ import { getServiceInfo, smartHostControl } from '../../reducers/service.redux'
+
+ @connect(
+     state=>({app: state.app, service: state.service}),
+     {
+         getServiceInfo, smartHostControl
+     }
+ )
  class ServicePage extends React.Component {
      state = {
          disturbStatus: 'OFF',
          swipeStatus: 'OFF'
      }
 
-     checkoutHandle = () => {
-        Modal.alert('确认退房？', '' , 
-            [{
-                text: '取消',
-                onPress: () => {}
-            },{
-                text: '确认',
-                onPress: () => {}
-            }]
-        )
+     componentDidMount() {
+         const { houseId } = this.props.app
+         this.props.getServiceInfo({
+            houseId: houseId,
+            deviceType: 'SWITCH' 
+         })
      }
 
      serviceHandle = (type) => {
@@ -34,15 +38,41 @@ import {
                 swipeStatus: 'OFF',
                 [type]: 'ON' 
             }
-            this.setState(state)
+            this.setState(state, () => this.lightClick(type, this.state[type]))
         } else {
             this.setState({
                 [type]: 'OFF' 
-            })
+            }, () => this.lightClick(type, this.state[type]))
         }
+     }
+     
+     lightClick = (type, status) => {
+        const { lights } = this.props.service
+        const { houseId } = this.props.app
+        if (type==='swipeStatus') {
+            const cleanlight = lights.filter(light => light.name === "请即清理")
+            this.props.smartHostControl({
+                houseId: houseId,
+                actionType: status,
+                deviceType: 'SWITCH',
+                wayId: cleanlight[0].wayId,
+                brightness:80
+            })
+          }
+          if (type==='disturbStatus') {
+            const cleanlight = lights.filter(light => light.name === "请勿打扰")
+            this.props.smartHostControl({
+                houseId: houseId,
+                actionType: status,
+                deviceType: 'SWITCH',
+                wayId: cleanlight[0].wayId,
+                brightness:80 
+            })
+          }
      }
 
      render() {
+         console.log(this.props.service)
          return (
              <ImageBackground style={styles.container} resizeMode='cover' source={require('./assets/bg_fw.png')}>
                 <View style={styles.wrap}>
@@ -66,9 +96,7 @@ import {
                             <Image source={require('./assets/swipe_on.png')} style={styles.light}></Image>
                         }
                     </TouchableWithoutFeedback> 
-                    <TouchableWithoutFeedback onPress={this.checkoutHandle} >
-                        <Image source={require('./assets/checkout_off.png')} style={styles.light}></Image>
-                    </TouchableWithoutFeedback> 
+                  
                 </View>
              </ImageBackground>
          );
@@ -98,11 +126,13 @@ import {
     },
     lights: {
         marginTop: 100,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 500
     },
     light: {
-        marginLeft: 12,
-        marginRight: 12
+        // marginLeft: 12,
+        // marginRight: 12
     }
  })
 

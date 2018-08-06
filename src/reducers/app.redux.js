@@ -36,18 +36,4 @@ export function app(state={},action) {
     }
   }
 
-  export function getSwitchServerId(info) {
-    return dispatch => {
-      request.get( config.api.base + config.api.querySmartDeviceWays, info)
-      .then(res => {
-        console.log(res)
-        if(res.success) {
-          // dispatch(dataSuccess({
-          //   roomName: res.dataObject.name,
-          //   hotelId: encode64(res.dataObject.hotelId),
-          //   houseId: encode64(res.dataObject.id)
-          // }))
-        }
-      })
-    } 
-  }
+ 
