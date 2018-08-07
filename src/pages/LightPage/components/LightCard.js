@@ -34,7 +34,7 @@ import {
                 props.type === '卫生间' ? 
                 <View style={styles.switch_view}>
                     <Text style={{fontSize: 26, color: '#000'}}>全开</Text>
-                    <Switch checked={props.switchStatus} onChange={props.switchChange}></Switch>
+                    <Switch checked={props.switchStatus} color='#fb7346' onChange={props.switchChange}></Switch>
                     <Text style={{fontSize: 26, color: '#000'}}>全关</Text>
                 </View>
                 :null

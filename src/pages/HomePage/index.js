@@ -11,6 +11,8 @@ import {
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import {connect} from 'react-redux'
+import { Toast } from 'antd-mobile-rn'
+import SplashScreen from 'react-native-splash-screen'
 
 import RoomName from './components/RoomName'
 import EnvirParams from './components/EnvirParams'
@@ -33,6 +35,7 @@ class HomePage extends React.Component {
 
     componentDidMount() {
        // console.log(DeviceInfo.getUniqueID())
+      SplashScreen.hide()
       this.props.getHouseInfo({pid:'101-101'})
     }
 
@@ -78,7 +81,7 @@ class HomePage extends React.Component {
             deviceType: 'FINGERPRINT_LOCK',
             deviceId: deviceId,
            // customerId: customerId
-        })
+        }, () => Toast.success('开锁成功'))
     }
 
     render() {

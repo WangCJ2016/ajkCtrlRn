@@ -109,7 +109,11 @@ import {
             )
         }
         return (
-            <Tabs tabs={airs} >
+            <Tabs 
+             tabBarUnderlineStyle={{backgroundColor: "#fb7346"}}
+             tabBarActiveTextColor='#fb7346'
+             tabBarInactiveTextColor='#333'
+             tabs={airs} >
             {
                 airs.map(air => (
                     <View key={air.deviceId} style={styles.tab_wrap}>

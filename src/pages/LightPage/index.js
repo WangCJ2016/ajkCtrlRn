@@ -70,6 +70,7 @@ import { connect } from 'react-redux'
      }
 
      switchChange = (e) =>  {
+         console.log(e)
         const { houseId } = this.props.app
         this.setState({
           switchStatus: !this.state.switchStatus

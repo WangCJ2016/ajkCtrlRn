@@ -106,8 +106,8 @@ import {
                             <TouchableHighlight style={[styles.round_view_btn]} onPress={()=>this.clickHandle('DOWN', box_deviceId)} underlayColor='#ccc'>
                                 <Image style={{transform: [{rotateZ:'-45deg'}]}} source={require('../assets/down.png')}></Image>
                             </TouchableHighlight>
-                            <TouchableOpacity style={styles.round_ok} onPress={()=>this.clickHandle('OK', box_deviceId)}>
-                                <Text style={{fontSize: 26, color: '#fff'}}>ok</Text>
+                            <TouchableOpacity style={[styles.round_ok]} onPress={()=>this.clickHandle('OK', box_deviceId)}>
+                                <Text style={{fontSize: 26, color: '#fff',transform: [{rotateZ:'-45deg'}]}}>ok</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.channel_voice_view}>
@@ -213,7 +213,7 @@ import {
          left: 63,
          alignItems: 'center',
          justifyContent: 'center',
-         transform: [{rotateZ: '-45deg'}]
+    
      },
      round_view_btn: {
          width: 103,

@@ -53,7 +53,11 @@ import {
                 </ScrollView>
         } 
         return (
-            <Tabs tabs={curtains} initialPage={1}>
+            <Tabs 
+             tabBarUnderlineStyle={{backgroundColor: "#fb7346"}}
+             tabBarActiveTextColor='#fb7346'
+             tabBarInactiveTextColor='#333'
+             tabs={curtains} >
             {
                 curtains.map(curtain => (
                     <ScrollView key={curtain.title} contentContainerStyle={styles.tab_wrap}>

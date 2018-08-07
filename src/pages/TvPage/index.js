@@ -53,7 +53,11 @@ import {
                 </ScrollView> 
          }
          return (
-            <Tabs tabs={tvs} >
+            <Tabs 
+             tabBarUnderlineStyle={{backgroundColor: "#fb7346"}}
+             tabBarActiveTextColor='#fb7346'
+             tabBarInactiveTextColor='#333'
+             tabs={tvs} >
                 {
                 tvs.map((tv, index) => (
                     <ScrollView key={index} contentContainerStyle={styles.tab_wrap}>
@@ -71,7 +75,6 @@ import {
 
      render() {
          const {tvs} = this.props.tv
-         console.log(this.props)
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_ds.png')} >
                 <View style={{flex: 1, width: '100%'}}>

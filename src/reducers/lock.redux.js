@@ -31,11 +31,14 @@ export function lock(state={},action) {
     }
   }
 
-  export function smartHostControl(info) {
+  export function smartHostControl(info, cb) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
             console.log(res)
+            if(res.success) {
+              cb()
+            } 
         })
     }
   }
