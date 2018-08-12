@@ -56,7 +56,6 @@ import {
                 data = {
                     houseId: houseId,
                     deviceType: deviceType,
-                    token: token,
                     deviceId: deviceId,
                     mode: 'COOL',
                     temp: key,

@@ -53,7 +53,8 @@ import {
                 </ScrollView> 
          }
          return (
-            <Tabs 
+            <Tabs
+             //renderTab = {() => (<View style={{width: 50, height: 100}}><Text>fsdfs</Text></View>)}
              tabBarUnderlineStyle={{backgroundColor: "#fb7346"}}
              tabBarActiveTextColor='#fb7346'
              tabBarInactiveTextColor='#333'

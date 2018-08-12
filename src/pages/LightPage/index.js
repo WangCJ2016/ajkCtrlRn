@@ -70,7 +70,6 @@ import { connect } from 'react-redux'
      }
 
      switchChange = (e) =>  {
-         console.log(e)
         const { houseId } = this.props.app
         this.setState({
           switchStatus: !this.state.switchStatus
@@ -96,7 +95,7 @@ import { connect } from 'react-redux'
          
          return (
             <ImageBackground resizeMode='cover' style={styles.container} source={require('./assets/bg_d.png')}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{alignItems: 'center', width:'100%', height: '100%'}}>
                     <LightTab changeType={this.props.dataSuccess} type={lightType}></LightTab>
                     <LightCard lights={typelights} type={lightType} switchStatus={this.state.switchStatus}  lightClick={this.lightClick} switchChange={this.switchChange}></LightCard> 
                 </ScrollView>
