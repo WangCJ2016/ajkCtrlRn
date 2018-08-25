@@ -14,6 +14,10 @@ import AirPage from '../pages/AirPage'
 import TvPage from '../pages/TvPage'
 import CurtainPage from '../pages/CurtainPage'
 import ModelPage from '../pages/ModelPage'
+import BindPage from '../pages/BindPage'
+import SelectHotel from '../pages/SelectHotelPage'
+import SelectRoomPage from '../pages/SelectRoomPage'
+import BindVerPage from '../pages/BindVerPage'
 
 const AppNavigator = createStackNavigator({
     Home: {
@@ -57,7 +61,31 @@ const AppNavigator = createStackNavigator({
         navigationOptions: {
             title: '情景模式'
         }
-    }
+    },
+    Bind: {
+        screen: BindPage,
+        navigationOptions: {
+            title: '酒店绑定'
+        } 
+    },
+    BindVer: {
+        screen: BindVerPage,
+        navigationOptions: {
+            title: '验证信息'
+        } 
+    },
+    SelectHotel: {
+        screen: SelectHotel,
+        navigationOptions: {
+            title:'选择酒店',
+        }
+    },
+    SelectRoom: {
+        screen: SelectRoomPage,
+        navigationOptions: {
+            title:'选择房间',
+        }
+    },
 },
 {
     initialRouteName:'Home', 

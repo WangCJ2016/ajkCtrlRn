@@ -3,61 +3,61 @@
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "图标20.jpg",
+      "filename" : "20.jpg",
       "scale" : "1x"
     },
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "图标40.jpg",
+      "filename" : "40.jpg",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "图标29jpg.jpg",
+      "filename" : "29.jpg",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "图标58.jpg",
+      "filename" : "58.jpg",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "图标40-1.jpg",
+      "filename" : "40-1.jpg",
       "scale" : "1x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "图标80.jpg",
+      "filename" : "80.jpg",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "图标76.jpg",
+      "filename" : "76.jpg",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "图标152.jpg",
+      "filename" : "152.jpg",
       "scale" : "2x"
     },
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "图标167.jpg",
+      "filename" : "167.jpg",
       "scale" : "2x"
     },
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "图标1024.jpg",
+      "filename" : "1024.jpg",
       "scale" : "1x"
     }
   ],

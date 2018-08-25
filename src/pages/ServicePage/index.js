@@ -72,7 +72,7 @@ import {
      }
 
      render() {
-         console.log(this.props.service)
+        
          return (
              <ImageBackground style={styles.container} resizeMode='cover' source={require('./assets/bg_fw.png')}>
                 <View style={styles.wrap}>
@@ -128,7 +128,8 @@ import {
         marginTop: 100,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 500
+        width: 350,
+        marginLeft: -150
     },
     light: {
         // marginLeft: 12,

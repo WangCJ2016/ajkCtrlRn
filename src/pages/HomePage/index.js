@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import {connect} from 'react-redux'
-import { Toast } from 'antd-mobile-rn'
+import { Toast, Button } from 'antd-mobile-rn'
 import SplashScreen from 'react-native-splash-screen'
 
 import RoomName from './components/RoomName'
@@ -33,16 +33,21 @@ class HomePage extends React.Component {
         lockState: false
     }
 
-    componentDidMount() {
-       // console.log(DeviceInfo.getUniqueID())
+    componentDidMount = () => {
       SplashScreen.hide()
-      this.props.getHouseInfo({pid:'101-101'})
+
+      this.deviceID = DeviceInfo.getUniqueID()
+      this.props.getHouseInfo({pid: this.deviceID})  // 101-101
+      
     }
 
     componentWillReceiveProps(nextProps) {
+        if(!nextProps.app.isBindDevice) {
+            this.goRouter('BindVer')
+        }
         if(nextProps.app.houseId && !nextProps.lock.deviceId) {
             const { houseId } = nextProps.app
-            this.props.getHouseInfo({pid:'101-101'})
+            this.props.getHouseInfo({pid: this.deviceID})
             this.props.getLockInfo({
               houseId: houseId, 
               deviceType: 'FINGERPRINT_LOCK' 
@@ -85,28 +90,33 @@ class HomePage extends React.Component {
     }
 
     render() {
-
+        const { houseId } = this.props.app
         return (
             <View style={styles.container}>
-                <ImageBackground source={require('./assets/bg_sy.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
-                    <View style={styles.room_status}>
-                        <RoomName roomName={this.props.app.roomName} />
-                        <EnvirParams />
-                    </View>
-                </ImageBackground>
-                <View style={{alignItems:'center',marginTop: -107}}>
-                    <TouchableWithoutFeedback 
-                        onPressIn={()=>this.setState({lockState: true})}
-                        onPressOut={()=>this.setState({lockState: false})}
-                        onPress={this.lockClick}>
-                        <Image source={this.state.lockState ? require('./assets/door_active.png'):require('./assets/door.png')}></Image>
-                    </TouchableWithoutFeedback> 
-                </View>
-                <View style={{alignItems:'center'}}>
-                    <View style={styles.router_wrap}>
-                        {this.pageRoutersRender()}
-                    </View> 
-                </View>
+                {
+                    houseId ? <View>
+                        <ImageBackground source={require('./assets/bg_sy.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
+                            <View style={styles.room_status}>
+                                <RoomName roomName={this.props.app.roomName} />
+                                <EnvirParams />
+                            </View>
+                        </ImageBackground>
+                        <View style={{alignItems:'center',marginTop: -107}}>
+                            <TouchableWithoutFeedback 
+                                onPressIn={()=>this.setState({lockState: true})}
+                                onPressOut={()=>this.setState({lockState: false})}
+                                onPress={this.lockClick}>
+                                <Image source={this.state.lockState ? require('./assets/door_active.png'):require('./assets/door.png')}></Image>
+                            </TouchableWithoutFeedback> 
+                        </View>
+                        <View style={{alignItems:'center'}}>
+                            <View style={styles.router_wrap}>
+                                {this.pageRoutersRender()}
+                            </View> 
+                        </View> 
+                    </View>:
+                    <Button type='primary' style={{width:200,marginTop: 200, alignSelf:'center'}} inline={true} onClick={this.componentDidMount}>点击刷新信息</Button>
+                }
             </View>
         );
     }

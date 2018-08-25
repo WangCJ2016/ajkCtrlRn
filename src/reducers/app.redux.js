@@ -31,6 +31,11 @@ export function app(state={},action) {
             hotelId: encode64(res.dataObject.hotelId),
             houseId: encode64(res.dataObject.id)
           }))
+        } else {
+          dispatch(dataSuccess({
+            isBindDevice: false,
+            UniqueId: info.pid
+          }))
         }
       })
     }

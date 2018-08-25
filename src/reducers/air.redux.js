@@ -1,5 +1,4 @@
 import { request, config} from '../config'
-import { encode64 } from '../utils'
 
 const initailState = {
     airs: []
@@ -47,6 +46,7 @@ export function air(state=initailState,action) {
                     if (res && res.success) {
                         if (deviceType === 'VIRTUAL_AIR_REMOTE') {
                             res.dataObject.devices.forEach((air) => {
+
                                 let airInfo = {},
                                     coolWays, warmWays
                                 if (air.ways) {
@@ -106,8 +106,19 @@ export function air(state=initailState,action) {
         })
     }
   }
+  
 
- 
+  export function getDeviceStatus(info) {
+    return function(dispatch) {
+      request.get(config.api.base + config.api.getDeviceStatus, info)
+        .then((res) => {
+            console.log(res)
+          if (res && res.success) {
+           // dispatch(changelightstatus(info.wayId))
+          }
+        })
+    }
+  } 
   export function smartHostControl(info) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)

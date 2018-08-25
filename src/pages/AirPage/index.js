@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
     View,
-    Text,
     ImageBackground,
     StyleSheet
  } from 'react-native'
@@ -9,13 +8,13 @@ import {
  import { connect } from 'react-redux'
 
  import AirCard from './components/AirCard'
- import { getAirInfo, smartHostControl } from '../../reducers/air.redux'
+ import { getAirInfo, smartHostControl, getDeviceStatus } from '../../reducers/air.redux'
  import BlankPage from '../../components/BlankPage'
 
  @connect(
      state => ({app: state.app, air: state.air}), 
      {
-         getAirInfo, smartHostControl
+         getAirInfo, smartHostControl, getDeviceStatus
      }
  )
  class AirPage extends React.Component {
@@ -27,6 +26,7 @@ import {
             deviceName: encodeURI('空调'), 
             houseId: houseId 
          })
+         console.log(this.props.app)
      }
      
     switchClick = ({deviceId, key, model, speed}) => {

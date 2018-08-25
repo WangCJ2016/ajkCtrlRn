@@ -26,16 +26,17 @@ export const config = {
         queryElevatorHost: 'we/we_queryElevatorHost',
         queryEnvDatas: 'we/we_queryEnvDatas', // 获取房间环境
         powerControl: 'we/we_powerControl',
-        checkout: 'we/we_customerLeave'
+        checkout: 'we/we_customerLeave',
+        getDeviceStatus: 'we/we_queryTvAirStatus', // 获取设备状态
+        getHotelList: 'we/we_queryHotels',  // 获取酒店列表
+        getHotelRoomsList: 'we/we_queryHouses' // 获取酒店房间列表
       }
 }
 
 export const request = {
     get(url,params) {
-      console.log( queryString.stringify(params))
       if(params) {
         url += '?operate=V1ZNeGNVeFhjM1JqTWpGb1kyNVNSR1JJU25NPQ==&' + queryString.stringify(params)
-        console.log(url)
       }
       return fetch(url)
       .then((res)=>res.json())

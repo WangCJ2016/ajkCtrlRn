@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import codePush from "react-native-code-push";
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk'; 
+
 import AppNavigator from './src/navigators'
 import AppReducer from './src/reducers/index';
 
@@ -24,6 +25,7 @@ class App extends React.Component {
       },
       mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
     })
+  
   }
   render() {
     return (
