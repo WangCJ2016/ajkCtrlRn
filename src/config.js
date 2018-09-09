@@ -10,8 +10,9 @@ export const config = {
         }
       },
       api: {
-        base: 'http://plt.live-ctrl.com/aijukex/', // http://47.100.123.83/aijukex http://www.live-ctrl.com/aijukex
-        websocket: 'www.live-ctrl.com/aijukex',
+        base: 'http://smt.live-ctrl.com/aijukex/', // http://47.100.123.83/aijukex http://www.live-ctrl.com/aijukex
+        websocketA: 'www.live-ctrl.com/aijukex',
+        websocketB: 'plt.live-ctrl.com/aijukex',
         getHouseInfo: 'we/we_queryHouseInfoByPid',
         queryHostDeviceByType:"we/we_queryHostDeviceByType",//主机信息
         queryHostScenes:"we/we_queryHostScenes",
@@ -29,7 +30,9 @@ export const config = {
         checkout: 'we/we_customerLeave',
         getDeviceStatus: 'we/we_queryTvAirStatus', // 获取设备状态
         getHotelList: 'we/we_queryHotels',  // 获取酒店列表
-        getHotelRoomsList: 'we/we_queryHouses' // 获取酒店房间列表
+        getHotelRoomsList: 'we/we_queryHouses', // 获取酒店房间列表
+        getTvAirStatus: 'we/we_queryTvAirStatus', // 获取设备状态
+        bindHouseToPad: 'we/we_createHotelHousePad', // 绑定设备 
       }
 }
 

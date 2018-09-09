@@ -33,13 +33,12 @@ export function lights(state=initialState, action) {
 
   export function getSwitchServerId(info) {
     return dispatch => {
-      request.get( config.api.base + config.api.querySmartDeviceWays, info)
+      request.get( config.api.base + config.api.queryLightsStatus, info)
       .then(res => {
-        console.log(res)
         if(res.success) {
           dispatch(dataSuccess({
-            lights: res.dataObject.ways.filter(way => way.name.includes('灯')),
-            serverId: res.dataObject.serverId
+            lights: res.dataObject.filter(way => way.name.includes('灯')),
+
           }))
         }
       })
@@ -48,10 +47,9 @@ export function lights(state=initialState, action) {
 
   export function lightClick(info) {
     return function(dispatch) {
-        dispatch(changelightstatus(info.wayId))
+       dispatch(changelightstatus(info.wayId))
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(res)
           if (res && res.success) {
            // dispatch(changelightstatus(info.wayId))
           }
@@ -74,7 +72,7 @@ export function lights(state=initialState, action) {
   // reducer handle
   function lightStatusHandle(lights, wayId) {
      return lights.map(light => {
-          if(light.wayId === wayId) {
+          if(light.id === wayId) {
               return {...light, status: light.status === 'ON' ? 'OFF' : "ON"}
           }
           return light

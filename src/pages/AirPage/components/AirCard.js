@@ -17,16 +17,19 @@ import {
      state = { 
         speed:3,
         switchKey:'OFF',
-        temIndex:-1,
+        temIndex:0,
         currentTemArray:[],
         model:'cold'
      }
 
-     componentDidMount(){
+     componentDidMount() {
         this.setState({
-          currentTemArray:this.props.air.coolWays
-        })
-      }
+          currentTemArray:this.props.air.coolWays,
+          switchKey: this.props.air.switchStatus,
+          temIndex: Math.floor(this.props.air.coolWays.length / 2) 
+      })
+    }
+
 
      switchClick = (deviceId) => {
         const key = this.state.switchKey === 'ON'?'OFF':'ON'
@@ -120,24 +123,25 @@ import {
      render() {
         const { switchKey, speed, currentTemArray, temIndex } = this.state
         const { air, deviceType } = this.props
+        console.log(currentTemArray, temIndex)
         return (
             <View style={styles.air_card}>
                <View style={[styles.row_center, {marginTop: 45}]}>
                    <TouchableOpacity style={styles.tem_btn} onPress={()=>this.temChange('minus', air.deviceId)}>
-                       <Image source={switchKey==='OFF'?require('../assets/c-1.png'):require('../assets/c-.png')}></Image>
+                       <Image source={switchKey!=='ON'?require('../assets/c-1.png'):require('../assets/c-.png')}></Image>
                        <Text style={styles.tem_desc}>温度-</Text>
                    </TouchableOpacity>
-                   <ImageBackground style={styles.tem_round} source={switchKey==='OFF'?require('../assets/round.png'):require('../assets/round_active.png')}>
+                   <ImageBackground style={styles.tem_round} source={switchKey!=='ON'?require('../assets/round.png'):require('../assets/round_active.png')}>
                        
                            <View style={styles.tem_text_view}>
-                               <Text style={{fontSize: 70, color: '#fff'}}>{switchKey==='ON'? (deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE' ? currentTemArray[temIndex]:currentTemArray[temIndex].slice(-2)):25}</Text>
+                               <Text style={{fontSize: 70, color: '#fff'}}>{switchKey!=='ON'? (deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE' ? currentTemArray[temIndex]:currentTemArray[temIndex].slice(-2)):25}</Text>
                                <Text style={{fontSize: 23, color: '#fff', marginTop: 5}}>℃</Text>
                            </View>
                            <Text style={{fontSize: 19, color: '#fff', marginTop: 25}}>预设的温度</Text>
                        
                    </ImageBackground>
                    <TouchableOpacity style={styles.tem_btn} onPress={()=>this.temChange('plus', air.deviceId)}>
-                       <Image source={switchKey==='OFF'? require('../assets/c+1.png'): require('../assets/c+.png')}></Image>
+                       <Image source={switchKey!=='ON'? require('../assets/c+1.png'): require('../assets/c+.png')}></Image>
                        <Text style={styles.tem_desc}>温度+</Text>
                    </TouchableOpacity>
                </View>
@@ -145,21 +149,21 @@ import {
                <View style={[styles.row_center, {marginLeft: 7, marginRight: 7}]}>
                    <TouchableOpacity style={styles.action_btn} onPress={() => this.switchClick(air.deviceId, this.state.switchKey === 'OFF' ? 'ON' : 'OFF')}>
                        <View style={styles.white_bg}>
-                           <Image source={switchKey==='OFF'?require('../assets/off1.png'):require('../assets/off.png')}></Image>
+                           <Image source={switchKey!=='ON'?require('../assets/off1.png'):require('../assets/off.png')}></Image>
                        </View>
-                       <Text style={[styles.btn_desc, {color: switchKey==='OFF'?"#666":'#6095f0'}]}>开关</Text> 
+                       <Text style={[styles.btn_desc, {color: switchKey!=='ON'?"#666":'#6095f0'}]}>开关</Text> 
                    </TouchableOpacity>
                    <TouchableOpacity style={styles.action_btn} onPress={this.speedChange}>
                        <View style={styles.white_bg}>
-                           <Image source={switchKey==='OFF'?require('../assets/speed0.png'):this.speedImgUrl(speed)}></Image>
+                           <Image source={switchKey!=='ON'?require('../assets/speed0.png'):this.speedImgUrl(speed)}></Image>
                        </View>
-                       <Text style={[styles.btn_desc,{color: switchKey==='OFF'?"#666":'#6095f0'}]}>风速</Text> 
+                       <Text style={[styles.btn_desc,{color: switchKey!=='ON'?"#666":'#6095f0'}]}>风速</Text> 
                    </TouchableOpacity>
                    <TouchableOpacity style={styles.action_btn} onPress={() => this.modelChange(air.deviceId)}>
                        <View style={styles.white_bg}>
-                           <Image source={switchKey==='OFF'?require('../assets/hot1.png'): MODELIMGURL[this.state.model]}></Image>
+                           <Image source={switchKey!=='ON'?require('../assets/hot1.png'): MODELIMGURL[this.state.model]}></Image>
                        </View>
-                       <Text style={[styles.btn_desc,{color: switchKey==='OFF'?"#666":'#6095f0'}]}>模式</Text> 
+                       <Text style={[styles.btn_desc,{color: switchKey!=='ON'?"#666":'#6095f0'}]}>模式</Text> 
                    </TouchableOpacity>
                </View>
             </View>

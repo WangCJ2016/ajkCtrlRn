@@ -24,106 +24,104 @@ export function air(state=initailState,action) {
   }
 
   export function getAirInfo(info) {
-    return dispatch => {
-        request.get(config.api.base + config.api.queryDeviceType, info)
-        .then(res => {
-            console.log(res)
-            if(res.success) {
-               return {
-                   houseId: info.houseId,
-                   deviceType: res.dataObject
-               }
-            }
-            throw new Error(res.msg)
-        })
-        .then(params => {
-           return request.get(config.api.base + config.api.queryHostDeviceByType, params)
-             .then(res=> {
-                if(res.success) {
-                    console.log(res)
-                    const deviceType  = params.deviceType
-                    let airs = []
-                    if (res && res.success) {
-                        if (deviceType === 'VIRTUAL_AIR_REMOTE') {
-                            res.dataObject.devices.forEach((air) => {
-
-                                let airInfo = {},
-                                    coolWays, warmWays
-                                if (air.ways) {
-                                    let coolName =  ''
-                                    let warmName = ''
-                                    coolWays = air.ways.filter(way => {
-                                        if (way.remoteKey.indexOf('COOL') > -1) {
-                                            return way;
-                                        }else{
-                                            return null
-                                        }
-                                    }).map(way => {
-                                        coolName = way.remoteKey.slice(0,-2)
-                                        return way.remoteKey.slice(-2);
-                                    }).sort((a,b)=>a-b).map(way => coolName + way)
-                                    warmWays = air.ways.filter(way => {
-                                        if (way.remoteKey.indexOf('WARM') > -1) {
-                                            return way;
-                                        }else{
-                                            return null
-                                        }
-                                    }).map(way => {
-                                        warmName = way.remoteKey.slice(0, -2)
-                                        return way.remoteKey.slice(-2);
-                                    }).sort((a,b)=>a-b).map(way => warmName + way);
+    return async (dispatch, getState) => {
+        const serverId = getState().app.serverId
+        const deviceTypeRes = await request.get(config.api.base + config.api.queryDeviceType, info)
+        if(deviceTypeRes && deviceTypeRes.success) {
+            const  houseId = info.houseId,
+                   deviceType = deviceTypeRes.dataObject
+            const airData = await request.get(config.api.base + config.api.queryHostDeviceByType, { houseId: houseId, deviceType: deviceType }) 
+            console.log(airData)
+            if (airData && airData.success) {
+                let airs = []
+                const data = airData.dataObject.devices
+                if (deviceType === 'VIRTUAL_AIR_REMOTE') {
+                    for(let i= 0; i<data.length; i++) {
+                        let air = data[i]
+                    
+                        const switchStatus = await getTvAirStatus(serverId, air.deviceId)
+                        
+                        let airInfo = {},
+                            coolWays, warmWays
+                        
+                        airInfo.switchStatus = switchStatus
+                        if (air.ways) {
+                            let coolName =  ''
+                            let warmName = ''
+                            coolWays = air.ways.filter(way => {
+                                if (way.remoteKey.indexOf('COOL') > -1) {
+                                    return way;
+                                }else{
+                                    return null
                                 }
-                                airInfo.deviceId = air.deviceId
-                                airInfo.coolWays = coolWays
-                                airInfo.warmWays = warmWays
-                                airInfo.name = air.name
-                                
-                                airs.push(airInfo)
-                            })
-                        } 
-                        else {
-                            res.dataObject.devices.forEach((air) => {
-                                let airInfo = {},
-                                    coolWays, warmWays
-                                coolWays = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30]
-                                warmWays = [20, 21, 22, 23, 24, 25, 26, 28, 29, 30]
-                                airInfo.deviceId = air.deviceId
-                                airInfo.coolWays = coolWays
-                                airInfo.warmWays = warmWays
-                                airInfo.name = air.name
-                                airs.push(airInfo)
-                            })
+                            }).map(way => {
+                                coolName = way.remoteKey.slice(0,-2)
+                                return way.remoteKey.slice(-2);
+                            }).sort((a,b)=>a-b).map(way => coolName + way)
+                            warmWays = air.ways.filter(way => {
+                                if (way.remoteKey.indexOf('WARM') > -1) {
+                                    return way;
+                                }else{
+                                    return null
+                                }
+                            }).map(way => {
+                                warmName = way.remoteKey.slice(0, -2)
+                                return way.remoteKey.slice(-2);
+                            }).sort((a,b)=>a-b).map(way => warmName + way);
                         }
-                        const newArray = airs.map(air => ({...air, title: air.name}))
-                        dispatch(dataSuccess({airs: newArray, deviceType: params.deviceType}))
+                        airInfo.deviceId = air.deviceId
+                        airInfo.coolWays = coolWays
+                        airInfo.warmWays = warmWays
+                        airInfo.name = air.name
+                        
+                        airs.push(airInfo)
+                }   
+                            
+                } else {
+                    for(let i=0;i<data.length;i++) {
+                        let air = data[i] 
+                        const switchStatus = await getTvAirStatus(serverId, air.deviceId)
+                        let airInfo = {},
+                        coolWays, warmWays
+                        coolWays = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30]
+                        warmWays = [20, 21, 22, 23, 24, 25, 26, 28, 29, 30]
+                        airInfo.switchStatus = switchStatus
+                        airInfo.deviceId = air.deviceId
+                        airInfo.coolWays = coolWays
+                        airInfo.warmWays = warmWays
+                        airInfo.name = air.name
+                    
+                        airs.push(airInfo)
                     }
+             
                 }
-             })
-        })
+                const newArray = airs.map(air => ({...air, title: air.name}))
+                dispatch(dataSuccess({airs: newArray, deviceType: deviceType}))
+            }
+        }
        
-        .catch(res=> {
-            alert(res)
-        })
     }
   }
   
 
-  export function getDeviceStatus(info) {
-    return function(dispatch) {
-      request.get(config.api.base + config.api.getDeviceStatus, info)
-        .then((res) => {
-            console.log(res)
-          if (res && res.success) {
-           // dispatch(changelightstatus(info.wayId))
-          }
-        })
-    }
-  } 
+  // 获取 空调 状态
+ function  getTvAirStatus(serverId, deviceId) {
+     console.log(serverId, deviceId)
+    return request.get(config.api.base + config.api.getTvAirStatus, {
+             serverId: serverId,
+             deviceId: deviceId,
+         })
+         .then(res => {
+             console.log(res)
+             return res.dataObject
+         })
+ 
+}
   export function smartHostControl(info) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(res)
+            console.log(info,res)
           if (res && res.success) {
            // dispatch(changelightstatus(info.wayId))
           }

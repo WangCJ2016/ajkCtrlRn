@@ -23,8 +23,9 @@ import {
      state = {  }
 
      componentDidMount() {
-        const { houseId } = this.props.app
+        const { serverId, houseId } = this.props.app
         this.props.getTvInfo({
+            serverId: serverId,
             houseId: houseId
         })    
      }

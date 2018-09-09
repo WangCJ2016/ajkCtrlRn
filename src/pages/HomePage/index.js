@@ -37,17 +37,15 @@ class HomePage extends React.Component {
       SplashScreen.hide()
 
       this.deviceID = DeviceInfo.getUniqueID()
-      this.props.getHouseInfo({pid: this.deviceID})  // 101-101
+      this.props.getHouseInfo({pid: '101-101'}, () => this.goRouter('BindVer'))  // 101-101
       
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!nextProps.app.isBindDevice) {
-            this.goRouter('BindVer')
-        }
+       
         if(nextProps.app.houseId && !nextProps.lock.deviceId) {
             const { houseId } = nextProps.app
-            this.props.getHouseInfo({pid: this.deviceID})
+           // this.props.getHouseInfo({pid: this.deviceID})
             this.props.getLockInfo({
               houseId: houseId, 
               deviceType: 'FINGERPRINT_LOCK' 

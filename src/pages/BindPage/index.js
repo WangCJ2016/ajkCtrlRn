@@ -10,19 +10,26 @@ import {
  } from 'react-native';
 import { List, Toast } from 'antd-mobile-rn'
 import { connect } from 'react-redux'
-
+import { bindHouseToPad } from '../../reducers/hotelList.redux'
 
 
 @connect(
     state => ({
         app: state.app,
         hotelList: state.hotelList
-    })
+    }),{
+        bindHouseToPad
+    }
 )
  class BindPage extends React.Component {
 
+    componentDidMount() {
+        console.log(this.props.app)
+    }
+
      submitHandle = () => {
         const { BindHotel, BindRoom } = this.props.hotelList 
+        const { UniqueId } = this.props.app
 
         if(!BindHotel) {
             Toast.info('请先选择酒店')
@@ -33,6 +40,13 @@ import { connect } from 'react-redux'
             Toast.info('请先选择房间')
             return
         }
+        
+        this.props.bindHouseToPad({
+            operate: 'V1ZNeGNVeFhjM1JqTWpGb1kyNVNSR1JJU25NPQ==',
+            title: BindHotel.name + BindRoom.name,
+            pid: UniqueId,
+            houseId: BindRoom.id
+        }, () => this.props.navigation.navigate('Home'))
      }
 
      selectRoomRouter = () => {
@@ -47,7 +61,6 @@ import { connect } from 'react-redux'
      render() {
          const { BindHotel, BindRoom } = this.props.hotelList
          const { navigate, goBack } = this.props.navigation
-         console.log(BindHotel, BindRoom)
          return (
              <ImageBackground style={{flex:1}} source={require('../SelectHotelPage/assets/bg_fw.png')} resizeMode='cover'>
                 <View style={styles.form_container}>
@@ -67,14 +80,14 @@ import { connect } from 'react-redux'
                     </TouchableHighlight>
                     <View style={styles.btn_wrap}>
                         <TouchableOpacity onPress={()=> goBack()}>
-                            <View style={styles.btn}>
+                            <ImageBackground source={require('./assets/btn_bg.png')} style={styles.btn}>
                                 <Text style={styles.btn_text}>取消</Text>
-                            </View>
+                            </ImageBackground>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.submitHandle}>
-                            <View style={styles.btn}>
+                            <ImageBackground source={require('./assets/btn_bg.png')} style={styles.btn}>
                                 <Text style={styles.btn_text}>确定</Text>
-                            </View>
+                            </ImageBackground>
                         </TouchableOpacity>
                     </View>
                 </View> 
@@ -113,7 +126,6 @@ import { connect } from 'react-redux'
          width: 200,
          height: 60,
          borderRadius: 30,
-         backgroundColor: '#F96C40',
          alignItems: 'center',
          justifyContent: 'center'
      },

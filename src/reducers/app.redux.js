@@ -20,7 +20,7 @@ export function app(state={},action) {
     }
   }
 
-  export function getHouseInfo(info) {
+  export function getHouseInfo(info, cb) {
     return dispatch => {
       request.get( config.api.base + config.api.getHouseInfo, info)
       .then(res => {
@@ -29,13 +29,15 @@ export function app(state={},action) {
           dispatch(dataSuccess({
             roomName: res.dataObject.name,
             hotelId: encode64(res.dataObject.hotelId),
-            houseId: encode64(res.dataObject.id)
+            houseId: encode64(res.dataObject.id),
+            serverId: res.dataObject.serverId
           }))
         } else {
           dispatch(dataSuccess({
             isBindDevice: false,
             UniqueId: info.pid
           }))
+          if (cb) cb()
         }
       })
     }

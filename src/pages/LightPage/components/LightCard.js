@@ -17,7 +17,7 @@ import {
                 props.lights.length>0? 
                 props.lights.map(light => {
                     const name = light.name.replace(props.type, '')
-                    return  <TouchableWithoutFeedback key={light.id} onPress={() => props.lightClick(light.status, light.wayId)}>
+                    return  <TouchableWithoutFeedback key={light.id} onPress={() => props.lightClick(light.status, light.id)}>
                         <View style={styles.light_item}>
                             <Image source={lightsUrl(name, light.status)}></Image>
                             <Text style={[styles.title, light.status === 'ON' ? styles.title_active: '']}>{name}</Text>

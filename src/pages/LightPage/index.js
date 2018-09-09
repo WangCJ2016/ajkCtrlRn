@@ -24,30 +24,35 @@ import { connect } from 'react-redux'
      }
 
      componentDidMount() {
-        const { houseId } = this.props.app
-        this.props.getSwitchServerId({houseId: houseId, deviceType: 'SWITCH' })   
+        const { serverId } = this.props.app
+        this.props.getSwitchServerId({serverId: serverId, deviceType: 'SWITCH' })   
      }
      
      componentWillReceiveProps(nextProps) {
-         if(nextProps.lights.serverId && !this.websocket) {
-             this.websocketHandle(nextProps.lights.serverId)
+        
+         if(!this.websocketA) {
+             this.websocketHandle(nextProps.app.serverId)
          }
      }
 
      componentWillUnmount() {
-         this.websocket.close()
+        this.websocketA.close()
+        this.websocketB.close()
      }
 
      websocketHandle = (serveId) => {
-        this.websocket = new WebSocket(`ws://${config.api.websocket}/stServlet.st?serverId=` + serveId) 
-        this.websocket.onopen = () => {
-          console.log('websocket已链接')
+        this.websocketA = new WebSocket(`ws://${config.api.websocketA}/stServlet.st?serverId=` + serveId) 
+        console.log(`ws://${config.api.websocketA}/stServlet.st?serverId=` + serveId)
+        this.websocketA.onopen = () => {
+          console.log('websocketA已链接')
         }
-        this.websocket.onmessage = (event) => {
+        this.websocketA.onmessage = (event) => {
+            
           let lights = this.props.lights.lights
           const lightNow = event.data.split('.WAY.')
+          
           const changelihts = lights.map((light, index) => {
-            if(light.wayId === lightNow[0]) {
+            if(light.id === lightNow[0]) {
               return {...light, status: lightNow[1]}
             }else {
               return light
@@ -55,6 +60,24 @@ import { connect } from 'react-redux'
           })
          this.props.dataSuccess({lights: changelihts})
          }
+
+        this.websocketB = new WebSocket(`ws://${config.api.websocketB}/stServlet.st?serverId=` + serveId) 
+        this.websocketB.onopen = () => {
+          console.log('websocketB已链接')
+        }
+        this.websocketB.onmessage = (event) => {
+          let lights = this.props.lights.lights
+         
+          const lightNow = event.data.split('.WAY.')
+          const changelihts = lights.map((light, index) => {
+            if(light.id === lightNow[0]) {
+              return {...light, status: lightNow[1]}
+            }else {
+              return light
+            }
+          })
+         this.props.dataSuccess({lights: changelihts})
+        }
      }
 
      lightClick = (status, wayId) => {
@@ -92,7 +115,7 @@ import { connect } from 'react-redux'
      render() {
          const { lightType, lights } = this.props.lights
          const typelights = lights.filter(light => light.name.includes(lightType))
-         
+        
          return (
             <ImageBackground resizeMode='cover' style={styles.container} source={require('./assets/bg_d.png')}>
                 <ScrollView contentContainerStyle={{alignItems: 'center', width:'100%', height: '100%'}}>

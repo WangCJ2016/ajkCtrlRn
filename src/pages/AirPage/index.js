@@ -26,10 +26,9 @@ import {
             deviceName: encodeURI('空调'), 
             houseId: houseId 
          })
-         console.log(this.props.app)
      }
      
-    switchClick = ({deviceId, key, model, speed}) => {
+    switchClick = ({deviceId, key }) => {
         const { houseId } = this.props.app
         const { deviceType } = this.props.air
         let data = null
@@ -92,6 +91,7 @@ import {
 
     airRender() {
         const { airs, deviceType } = this.props.air
+        console.log(airs)
         if(airs.length === 0) {
             return <BlankPage url={require('./assets/kongtiao_kng.png')} desc='无可控空调' color='#5b97fd'></BlankPage>
         }
@@ -130,7 +130,7 @@ import {
     }
 
      render() {
-        const { airs, deviceType } = this.props.air
+       
          return (
              <ImageBackground style={styles.container} source={require('./assets/bg_kt.png')} resizeMode='cover'>
                 <View style={{flex: 1, width: '100%'}}>

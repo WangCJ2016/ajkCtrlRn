@@ -50,4 +50,17 @@ export function hotelList(state=initalState,action) {
       } 
   }
 
+  // 绑定设备
+  export function bindHouseToPad(info, cb) {
+    return dispatch => {
+        request.get( config.api.base + config.api.bindHouseToPad, info)
+        .then(res => {
+          console.log(res)
+          if(res.success) {
+             cb()
+          }
+        })
+      } 
+  }
+
  

@@ -14,7 +14,7 @@ import { Toast } from 'antd-mobile-rn'
      state = {  }
 
      checkVerCode = () => {
-        if(this.state.value !== 'ajk05710586') {  // ajk05710586
+        if(this.state.value === 'ajk05710586') {  // ajk05710586
             this.props.navigation.navigate('Bind')
         } else {
             this.props.navigation.navigate('Bind')
