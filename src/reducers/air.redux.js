@@ -31,7 +31,6 @@ export function air(state=initailState,action) {
             const  houseId = info.houseId,
                    deviceType = deviceTypeRes.dataObject
             const airData = await request.get(config.api.base + config.api.queryHostDeviceByType, { houseId: houseId, deviceType: deviceType }) 
-            console.log(airData)
             if (airData && airData.success) {
                 let airs = []
                 const data = airData.dataObject.devices
@@ -106,13 +105,11 @@ export function air(state=initailState,action) {
 
   // 获取 空调 状态
  function  getTvAirStatus(serverId, deviceId) {
-     console.log(serverId, deviceId)
     return request.get(config.api.base + config.api.getTvAirStatus, {
              serverId: serverId,
              deviceId: deviceId,
          })
          .then(res => {
-             console.log(res)
              return res.dataObject
          })
  
@@ -121,7 +118,6 @@ export function air(state=initailState,action) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(info,res)
           if (res && res.success) {
            // dispatch(changelightstatus(info.wayId))
           }

@@ -123,9 +123,9 @@ import {
      render() {
         const { switchKey, speed, currentTemArray, temIndex } = this.state
         const { air, deviceType } = this.props
-        console.log(currentTemArray, temIndex)
+       
         return (
-            <View style={styles.air_card}>
+            currentTemArray.length>0?<View style={styles.air_card}>
                <View style={[styles.row_center, {marginTop: 45}]}>
                    <TouchableOpacity style={styles.tem_btn} onPress={()=>this.temChange('minus', air.deviceId)}>
                        <Image source={switchKey!=='ON'?require('../assets/c-1.png'):require('../assets/c-.png')}></Image>
@@ -166,7 +166,7 @@ import {
                        <Text style={[styles.btn_desc,{color: switchKey!=='ON'?"#666":'#6095f0'}]}>模式</Text> 
                    </TouchableOpacity>
                </View>
-            </View>
+            </View>:null
         )
      }
  }

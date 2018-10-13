@@ -31,7 +31,6 @@ export function curtain(state=initailState,action) {
     return dispatch => {
       request.get( config.api.base + config.api.queryCurtains, info)
       .then(res => {
-        console.log(res)
         if(res.success) {
             let curtainsArr = []
             for (const key in res.dataObject.curtains) {
@@ -49,7 +48,6 @@ export function curtain(state=initailState,action) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(res)
           if (res && res.success) {
             dispatch(btnType({wayId: info.wayId, type: info.actionType}))
           }
@@ -79,6 +77,5 @@ export function curtain(state=initailState,action) {
           })
           return {...curtain, ways: _curtain}
       })
-      console.log(_curtains)
       return _curtains
   }

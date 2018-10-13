@@ -42,7 +42,6 @@ import { connect } from 'react-redux'
 
      websocketHandle = (serveId) => {
         this.websocketA = new WebSocket(`ws://${config.api.websocketA}/stServlet.st?serverId=` + serveId) 
-        console.log(`ws://${config.api.websocketA}/stServlet.st?serverId=` + serveId)
         this.websocketA.onopen = () => {
           console.log('websocketA已链接')
         }
@@ -97,7 +96,6 @@ import { connect } from 'react-redux'
         this.setState({
           switchStatus: !this.state.switchStatus
         })
-       // console.log(e, this.state.switchStatus)
         const {lights, lightType} = this.props.lights
          lights
         .filter((light) => light.name&&light.name.indexOf(lightType) > -1)

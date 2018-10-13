@@ -37,9 +37,12 @@ export function service(state=initailState,action) {
 
   export function smartHostControl(info) {
     return function(dispatch) {
-      request.get(config.api.base + config.api.smartHostControl, info)
+      request.get(config.api.base + config.api.smartHostControl, {
+        ...info,
+        actionType: info.actionType === 'ON' ? 'OPEN' : 'CLOSE'
+      })
         .then((res) => {
-            console.log(res)
+          console.log(res)
           if (res && res.success) {
            // dispatch(changelightstatus(info.wayId))
           }

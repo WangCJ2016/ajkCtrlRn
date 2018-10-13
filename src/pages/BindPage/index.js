@@ -6,7 +6,8 @@ import {
     ImageBackground,
     TouchableHighlight,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    DeviceEventEmitter
  } from 'react-native';
 import { List, Toast } from 'antd-mobile-rn'
 import { connect } from 'react-redux'
@@ -23,9 +24,6 @@ import { bindHouseToPad } from '../../reducers/hotelList.redux'
 )
  class BindPage extends React.Component {
 
-    componentDidMount() {
-        console.log(this.props.app)
-    }
 
      submitHandle = () => {
         const { BindHotel, BindRoom } = this.props.hotelList 
@@ -46,7 +44,10 @@ import { bindHouseToPad } from '../../reducers/hotelList.redux'
             title: BindHotel.name + BindRoom.name,
             pid: UniqueId,
             houseId: BindRoom.id
-        }, () => this.props.navigation.navigate('Home'))
+        }, () => {
+            this.props.navigation.navigate('Home');
+            DeviceEventEmitter.emit('addHouse')
+        })
      }
 
      selectRoomRouter = () => {

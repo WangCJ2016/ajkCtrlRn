@@ -1,11 +1,6 @@
-import React from 'react';
-import { 
-  Text,
-  Image
- } from 'react-native'
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator,createStackNavigator,withNavigation,NavigationActions } from 'react-navigation';
+
+
+import {createStackNavigator } from 'react-navigation';
 
 import HomePage from '../pages/HomePage'
 import LightsPage from '../pages/LightPage'
@@ -18,6 +13,7 @@ import BindPage from '../pages/BindPage'
 import SelectHotel from '../pages/SelectHotelPage'
 import SelectRoomPage from '../pages/SelectRoomPage'
 import BindVerPage from '../pages/BindVerPage'
+// test
 
 const AppNavigator = createStackNavigator({
     Home: {
@@ -86,6 +82,7 @@ const AppNavigator = createStackNavigator({
             title:'选择房间',
         }
     },
+   
 },
 {
     initialRouteName:'Home', 

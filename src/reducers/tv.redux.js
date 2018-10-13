@@ -27,7 +27,7 @@ export function tv(state=initialState,action) {
       const serverId = getState().app.serverId
       request.get( config.api.base + config.api.queryTvDevices, info)
       .then(async res => {
-        console.log(res)
+       
         if(res.success) {
             let arry = []
             for(let i in res.dataObject){
@@ -68,7 +68,7 @@ export function tv(state=initialState,action) {
            deviceId: deviceId,
        })
        .then(res => {
-           console.log(res)
+          
            return res.dataObject
        })
 
@@ -78,7 +78,7 @@ export function tv(state=initialState,action) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(res)
+           
           
         })
     }

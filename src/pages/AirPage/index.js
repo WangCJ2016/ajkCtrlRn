@@ -91,7 +91,6 @@ import {
 
     airRender() {
         const { airs, deviceType } = this.props.air
-        console.log(airs)
         if(airs.length === 0) {
             return <BlankPage url={require('./assets/kongtiao_kng.png')} desc='无可控空调' color='#5b97fd'></BlankPage>
         }

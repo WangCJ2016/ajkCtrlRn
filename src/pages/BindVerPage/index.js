@@ -11,14 +11,20 @@ import {
 import { Toast } from 'antd-mobile-rn'
 
  class BindVerPage extends React.Component {
-     state = {  }
+     state = { 
+         value: ''
+      }
 
      checkVerCode = () => {
+         if(this.state.value === '') {
+            Toast.info('验证密码不能为空')
+            return
+         }
         if(this.state.value === 'ajk05710586') {  // ajk05710586
             this.props.navigation.navigate('Bind')
         } else {
-            this.props.navigation.navigate('Bind')
-            Toast.info('验证密码不能为空')
+            //this.props.navigation.navigate('Bind')
+            Toast.info('验证密码不正确')
         }
      } 
 

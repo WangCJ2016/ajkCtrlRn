@@ -23,7 +23,7 @@ export function lock(state={},action) {
     return dispatch => {
         request.get(config.api.base + config.api.queryHostDeviceByType, info)
         .then(res => {
-            console.log(res)
+           
           if (res.success) {
               dispatch(dataSuccess({deviceId: res.dataObject.devices[0].deviceId}))
           }
@@ -35,7 +35,7 @@ export function lock(state={},action) {
     return function(dispatch) {
       request.get(config.api.base + config.api.smartHostControl, info)
         .then((res) => {
-            console.log(res)
+           
             if(res.success) {
               cb()
             } 

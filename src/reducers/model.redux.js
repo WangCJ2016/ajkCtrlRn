@@ -23,7 +23,7 @@ export function model(state={},action) {
     return dispatch => {
       request.get( config.api.base + config.api.queryHostScenes, info)
       .then(res => {
-        console.log(res)
+       
         if(res.success) {
             if(res.dataObject.type===0) {
                 dispatch(dataSuccess({
@@ -48,7 +48,7 @@ export function model(state={},action) {
         request.get(config.api.base + config.api.smartHostControl, info)
         .then(res => {
           if(res.success) {
-            console.log(res)
+           
           }
         })
       }

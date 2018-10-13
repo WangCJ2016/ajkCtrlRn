@@ -1,7 +1,7 @@
 import React from 'react';
 // import App from './App';
 import { Provider } from 'react-redux';
-import codePush from "react-native-code-push";
+// import codePush from "react-native-code-push";
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk'; 
 
@@ -25,7 +25,7 @@ class App extends React.Component {
     //   },
     //   mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
     // }
-    codePush.sync()
+    //codePush.sync()
   }
   render() {
     return (

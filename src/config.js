@@ -45,6 +45,7 @@ export const request = {
       .then((res)=>res.json())
       .then(res => {
         if(!res.success) {
+            Toast.hide()
             Toast.info(res.msg)
           } 
           return res

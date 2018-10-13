@@ -7,11 +7,12 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Image
+    Image,
+    DeviceEventEmitter
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import {connect} from 'react-redux'
-import { Toast, Button } from 'antd-mobile-rn'
+import { Toast } from 'antd-mobile-rn'
 import SplashScreen from 'react-native-splash-screen'
 
 import RoomName from './components/RoomName'
@@ -29,16 +30,23 @@ const WIDTH = Dimensions.get('window').width
     }
 )
 class HomePage extends React.Component {
+    static navigationOptions = ({navigation,screenProps}) => ({  
+        header: null
+    });  
+
     state = {
         lockState: false
     }
-
+    
     componentDidMount = () => {
       SplashScreen.hide()
 
       this.deviceID = DeviceInfo.getUniqueID()
-      this.props.getHouseInfo({pid: '101-101'}, () => this.goRouter('BindVer'))  // 101-101
-      
+      this.props.getHouseInfo({pid: this.deviceID}, () => this.goRouter('BindVer')) 
+      this.listener = DeviceEventEmitter.addListener('addHouse', () => {
+        this.deviceID = DeviceInfo.getUniqueID()
+        this.props.getHouseInfo({pid: this.deviceID}, () => this.goRouter('BindVer')) 
+      })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,6 +59,10 @@ class HomePage extends React.Component {
               deviceType: 'FINGERPRINT_LOCK' 
             }) 
         }
+    }
+
+    componentWillUnmount(){
+        this.listener.remove();
     }
 
     pageRoutersRender = () => {
@@ -88,33 +100,35 @@ class HomePage extends React.Component {
     }
 
     render() {
-        const { houseId } = this.props.app
+        const { app } = this.props
+        console.log(app)
         return (
             <View style={styles.container}>
+            
+                <ImageBackground source={app.lock ? require('./assets/bg_sy.png') : require('./assets/-s-backgrpad.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
+                    <View style={styles.room_status}>
+                        <RoomName roomName={this.props.app.roomName} />
+                        <EnvirParams />
+                    </View>
+                </ImageBackground>
                 {
-                    houseId ? <View>
-                        <ImageBackground source={require('./assets/bg_sy.png')} style={{width: WIDTH, height: WIDTH * 0.666}}>
-                            <View style={styles.room_status}>
-                                <RoomName roomName={this.props.app.roomName} />
-                                <EnvirParams />
-                            </View>
-                        </ImageBackground>
-                        <View style={{alignItems:'center',marginTop: -107}}>
-                            <TouchableWithoutFeedback 
-                                onPressIn={()=>this.setState({lockState: true})}
-                                onPressOut={()=>this.setState({lockState: false})}
-                                onPress={this.lockClick}>
-                                <Image source={this.state.lockState ? require('./assets/door_active.png'):require('./assets/door.png')}></Image>
-                            </TouchableWithoutFeedback> 
-                        </View>
-                        <View style={{alignItems:'center'}}>
-                            <View style={styles.router_wrap}>
-                                {this.pageRoutersRender()}
-                            </View> 
-                        </View> 
-                    </View>:
-                    <Button type='primary' style={{width:200,marginTop: 200, alignSelf:'center'}} inline={true} onClick={this.componentDidMount}>点击刷新信息</Button>
+                    app.lock ? 
+                    <View style={{alignItems:'center',marginTop: -107}}>
+                        <TouchableWithoutFeedback 
+                            onPressIn={()=>this.setState({lockState: true})}
+                            onPressOut={()=>this.setState({lockState: false})}
+                            onPress={this.lockClick}>
+                            <Image source={this.state.lockState ? require('./assets/door_active.png'):require('./assets/door.png')}></Image>
+                        </TouchableWithoutFeedback> 
+                    </View>
+                    : null
                 }
+                <View style={{alignItems:'center', justifyContent: 'center', flex:1}}>
+                    <View style={styles.router_wrap}>
+                        {this.pageRoutersRender()}
+                    </View> 
+                </View> 
+            
             </View>
         );
     }
@@ -126,10 +140,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF'
     },
     room_status: {
-        marginLeft: 114,
-        marginRight: 140,
+        // marginLeft: 114,
+        // marginRight: 140,
         marginTop: 100,
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         flexDirection: 'row',
         alignItems: 'flex-end',
         height: 218
@@ -138,7 +152,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         width: 600,
-        marginTop: 50
+        // marginTop: 50
     },
     router_item: {
         width: 150,
@@ -146,7 +160,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: '#eee',
-        borderLeftWidth: 1
+        borderLeftWidth: 1,
+        // marginTop: 50
     },
     border_bottom: {
         borderBottomWidth: 1,

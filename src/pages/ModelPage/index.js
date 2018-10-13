@@ -6,11 +6,14 @@ import {
     StyleSheet,
     ImageBackground,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
  } from 'react-native';
  import { connect } from 'react-redux'
  import { getHostScenes, actionCtrl } from '../../reducers/model.redux'
  import { modelArr } from '../../utils'
+
+ const { width } = Dimensions.get('window')
 
  @connect(
      state => ({app: state.app, model: state.model}),
@@ -77,7 +80,8 @@ import {
  
  const styles = StyleSheet.create({
      models_view: {
-         width: 600,
+         width: '80%',
+         maxWidth: 600,
          flexWrap: 'wrap',
          flexDirection: 'row',
          alignItems: 'center',
@@ -85,7 +89,7 @@ import {
          marginTop: 45
      },
      model_view: {
-         width: 275,
+         width: width * 0.8 * 0.46,
          height: 150,
          borderRadius: 5,
          overflow: 'hidden',
