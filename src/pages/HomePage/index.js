@@ -20,13 +20,19 @@ import EnvirParams from './components/EnvirParams'
 
 import { getHouseInfo } from '../../reducers/app.redux'
 import { getLockInfo, smartHostControl } from '../../reducers/lock.redux'
+import { getDevices } from '../../reducers/temCtrl.redux'
+
 
 const WIDTH = Dimensions.get('window').width
 
 @connect(
-    state=>({app: state.app, lock: state.lock}),
+    state=>({
+        app: state.app, 
+        lock: state.lock,
+        temCtrl: state.temCtrl
+    }),
     {
-        getHouseInfo, getLockInfo, smartHostControl
+        getHouseInfo, getLockInfo, smartHostControl, getDevices
     }
 )
 class HomePage extends React.Component {
@@ -42,22 +48,33 @@ class HomePage extends React.Component {
       SplashScreen.hide()
 
       this.deviceID = DeviceInfo.getUniqueID()
+
       this.props.getHouseInfo({pid: this.deviceID}, () => this.goRouter('BindVer')) 
-      this.listener = DeviceEventEmitter.addListener('addHouse', () => {
+      
+     // 监听
+     this.listener = DeviceEventEmitter.addListener('addHouse', () => {
         this.deviceID = DeviceInfo.getUniqueID()
         this.props.getHouseInfo({pid: this.deviceID}, () => this.goRouter('BindVer')) 
+         // 获取温控
+        this.props.getDevices({
+            serverId: this.props.app.serverId
+        })
       })
     }
 
     componentWillReceiveProps(nextProps) {
        
         if(nextProps.app.houseId && !nextProps.lock.deviceId) {
-            const { houseId } = nextProps.app
+            const { houseId, serverId } = nextProps.app
            // this.props.getHouseInfo({pid: this.deviceID})
             this.props.getLockInfo({
               houseId: houseId, 
               deviceType: 'FINGERPRINT_LOCK' 
             }) 
+          // 获取温控
+            this.props.getDevices({
+                serverId: serverId
+             })
         }
     }
 
@@ -66,6 +83,7 @@ class HomePage extends React.Component {
     }
 
     pageRoutersRender = () => {
+        const {temCtrl} = this.props
         let figures = [
             {img:require(`./assets/light.png`),title:'灯',path:`Light`},
             {img:require(`./assets/air.png`),title:'空调',path:`Air`},
@@ -74,6 +92,9 @@ class HomePage extends React.Component {
             {img:require(`./assets/model.png`),title:'情景',path:`Model`},
             {img:require(`./assets/service.png`),title:'服务',path:`Service`},
          ]
+         if(temCtrl.temCltrIf) {
+            figures = [...figures, {img:require(`./assets/tem_icon.png`),title:'温控',path:`TemCtrl`}]
+         }
          return figures.map((figure, index) => (
              <TouchableOpacity key={index} onPress={() => this.goRouter(figure.path)}>
                  <View style={[styles.router_item, index<4?styles.border_bottom:'',index===figures.length-1?styles.border_right:'']}>

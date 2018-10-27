@@ -123,7 +123,6 @@ import {
      render() {
         const { switchKey, speed, currentTemArray, temIndex } = this.state
         const { air, deviceType } = this.props
-       
         return (
             currentTemArray.length>0?<View style={styles.air_card}>
                <View style={[styles.row_center, {marginTop: 45}]}>
@@ -134,7 +133,10 @@ import {
                    <ImageBackground style={styles.tem_round} source={switchKey!=='ON'?require('../assets/round.png'):require('../assets/round_active.png')}>
                        
                            <View style={styles.tem_text_view}>
-                               <Text style={{fontSize: 70, color: '#fff'}}>{switchKey!=='ON'? (deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE' ? currentTemArray[temIndex]:currentTemArray[temIndex].slice(-2)):25}</Text>
+                               <Text style={{fontSize: 70, color: '#fff'}}>{
+                                   switchKey==='ON'? (deviceType === 'VIRTUAL_CENTRAL_AIR_REMOTE' ? 
+                                      currentTemArray[temIndex]:currentTemArray[temIndex].slice(-2))
+                                      :25}</Text>
                                <Text style={{fontSize: 23, color: '#fff', marginTop: 5}}>℃</Text>
                            </View>
                            <Text style={{fontSize: 19, color: '#fff', marginTop: 25}}>预设的温度</Text>

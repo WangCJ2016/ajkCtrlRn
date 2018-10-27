@@ -104,7 +104,7 @@ import { connect } from 'react-redux'
                 houseId: houseId,
                 deviceType: 'SWITCH',
                 actionType: e?'OPEN':'CLOSE',
-                wayId: light.wayId,
+                wayId: light.id,
                 brightness: 80
             })
         })

@@ -33,6 +33,7 @@ export const config = {
         getHotelRoomsList: 'we/we_queryHouses', // 获取酒店房间列表
         getTvAirStatus: 'we/we_queryTvAirStatus', // 获取设备状态
         bindHouseToPad: 'we/we_createHotelHousePad', // 绑定设备 
+        queryHeatings: 'we/we_queryHeatings',  // 地暖设备 
       }
 }
 

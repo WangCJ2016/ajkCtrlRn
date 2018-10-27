@@ -13,6 +13,7 @@ import BindPage from '../pages/BindPage'
 import SelectHotel from '../pages/SelectHotelPage'
 import SelectRoomPage from '../pages/SelectRoomPage'
 import BindVerPage from '../pages/BindVerPage'
+import TemCtrl from '../pages/TemCtrl'
 // test
 
 const AppNavigator = createStackNavigator({
@@ -82,7 +83,12 @@ const AppNavigator = createStackNavigator({
             title:'选择房间',
         }
     },
-   
+    TemCtrl: {
+        screen: TemCtrl,
+        navigationOptions: {
+            title:'温控',
+        }
+    },
 },
 {
     initialRouteName:'Home', 
